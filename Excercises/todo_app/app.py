@@ -29,7 +29,8 @@ db.create_all()
 @app.route("/")
 def index():
     # Flask will look for this file in templates folder
-    return render_template("index.html")
+    # Todo.query.all() will all the records from table representing model Todo
+    return render_template("index.html", data=Todo.query.all())
 
 
 if __name__ == '__main__':
