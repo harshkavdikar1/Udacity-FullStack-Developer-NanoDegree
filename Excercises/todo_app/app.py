@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 # Create an application with same name as name of the module
 app = Flask(__name__)
@@ -10,7 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://student:student@localhost:54
 # Create a database object which links SQLAlchemy to our current app
 db = SQLAlchemy(app)
 
-
+# Configure database with current applcation for migrations
+migrate = Migrate(app, db)
 
 # Model the todo class
 class Todo(db.Model):
@@ -18,14 +20,16 @@ class Todo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
 
     # Format the objects while printing
     def __repr__(self):
         return f'<Todo {self.id} {self.description}>'
 
 
-# Create model of todo class in database
-db.create_all()
+# Need to comment it out when implementiong migrations
+# Create model of all the classes in database
+# db.create_all()
 
 
 @app.route("/todos/create", methods=["POST"])
