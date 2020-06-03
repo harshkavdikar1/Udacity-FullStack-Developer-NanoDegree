@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 # Create an application with same name as name of the module
@@ -10,9 +10,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://student:student@localhost:54
 # Create a database object which links SQLAlchemy to our current app
 db = SQLAlchemy(app)
 
+
+
 # Model the todo class
-
-
 class Todo(db.Model):
     __tablename__ = "todos"
 
@@ -28,9 +28,9 @@ class Todo(db.Model):
 db.create_all()
 
 
-@app.route("/create", methods=["POST"])
+@app.route("/todos/create", methods=["POST"])
 def create_todo():
-    desc = request.form.get("description", "")
+    desc = request.get_json()["description"]
     # Create an object ot Todo
     todo = Todo(description=desc)
     # Add data to the table
@@ -38,7 +38,9 @@ def create_todo():
     # Flush the data and commit it to database
     db.session.commit()
     # should match the method name of the url
-    return redirect(url_for("index"))
+    return jsonify({
+        "description": todo.description
+    })
 
 
 # Route the index page of the website to this method
