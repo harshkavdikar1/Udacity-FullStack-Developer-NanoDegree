@@ -9,7 +9,19 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        width: 300px;
+        width: 200px;
+      }
+      li {
+        clear: both;
+      }
+      li button {
+        -webkit-appearance: none;
+        border: none;
+        outline: none;
+        color: red;
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
       }
     </style>
   </head>
@@ -21,7 +33,11 @@
     </form>
     <ul id="todos">
       {% for d in data %}
-      <li><input type="checkbox" data-id="{{ d.id }}" class="check-completed" {% if d.completed %} checked {% endif %}> {{d.description }}</li>
+      <li>
+        <input type="checkbox" data-id="{{ d.id }}" class="check-completed" {% if d.completed %} checked {% endif %}> 
+        {{d.description }} 
+        <button class="delete-button" data-id="{{ d.id }}">&cross;</button>
+      </li>
       {% endfor %}
     </ul>
     <script>
@@ -65,15 +81,43 @@
         })
         .then(response => response.json())
         .then(jsonResponse => {
-          console.log('response', jsonResponse);
-          li = document.createElement('li');
-          li.innerText = desc;
+          const li = document.createElement('li');
+          const checkbox = document.createElement('input');
+          checkbox.className = 'check-completed';
+          checkbox.type = 'checkbox';
+          checkbox.setAttribute('data-id', jsonResponse.id);
+          li.appendChild(checkbox);
+
+          const text = document.createTextNode(' ' + jsonResponse.description);
+          li.appendChild(text);
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-button';
+          deleteBtn.setAttribute('data-id', jsonResponse.id);
+          deleteBtn.innerHTML = '&cross;';
+          li.appendChild(deleteBtn);
+
           document.getElementById('todos').appendChild(li);
           document.getElementById('error').className = 'hidden';
         })
         .catch(function() {
+          console.error('Error occurred');
           document.getElementById('error').className = '';
         })
+      }
+      const deleteBtns = document.querySelectorAll('.delete-button');
+      for (let i = 0; i < deleteBtns.length; i++) {
+        const btn = deleteBtns[i];
+        btn.onclick = function(e) {
+          const todoId = e.target.dataset['id'];
+          fetch('/todos/' + todoId, {
+            method: 'DELETE'
+          })
+          .then(function() {
+            const item = e.target.parentElement;
+            item.remove();
+          })
+        }
       }
     </script>
   </body>

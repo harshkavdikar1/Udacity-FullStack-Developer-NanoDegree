@@ -60,10 +60,13 @@ def index():
 @app.route('/todos/<todo_id>/set-completed', methods=['POST'])
 def set_completed_todo(todo_id):
     try:
+        # Read checked or unchecked item from the client
         completed = request.get_json()['completed']
-        print('completed', completed)
+        # Get the element from back-end by querying by id
         todo = Todo.query.get(todo_id)
+        # Update the model with checked value
         todo.completed = completed
+        # Commit the changes to the database
         db.session.commit()
     except:
         db.session.rollback()
@@ -71,6 +74,16 @@ def set_completed_todo(todo_id):
         db.session.close()
     return redirect(url_for('index'))
 
+@app.route('/todos/<todo_id>', methods=['DELETE'])
+def delete_todo(todo_id):
+  try:
+    Todo.query.filter_by(id=todo_id).delete()
+    db.session.commit()
+  except:
+    db.session.rollback()
+  finally:
+    db.session.close()
+  return jsonify({ 'success': True })
 
 if __name__ == '__main__':
     app.run(debug=True)
