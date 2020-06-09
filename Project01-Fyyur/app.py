@@ -111,8 +111,6 @@ def index():
 
 @app.route('/venues')
 def venues():
-    # TODO: replace with real venues data.
-    #       num_shows should be aggregated based on number of upcoming shows per venue.
     cities = Venue.query.with_entities(
         Venue.city, Venue.state).group_by(Venue.state, Venue.city).all()
 
@@ -283,7 +281,6 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-    # TODO: replace with real data returned from querying the database
     all_artists = Artist.query.with_entities(Artist.id, Artist.name).all()
 
     data = []
@@ -314,8 +311,6 @@ def search_artists():
 
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
-    # shows the venue page with the given venue_id
-    # TODO: replace with real venue data from the venues table, using venue_id
 
     artist = Artist.query.get(artist_id)
 
@@ -394,21 +389,24 @@ def edit_artist_submission(artist_id):
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
     form = VenueForm()
+
+    venue = Venue.query.get(venue_id)
+
     venue = {
-        "id": 1,
-        "name": "The Musical Hop",
-        "genres": ["Jazz", "Reggae", "Swing", "Classical", "Folk"],
-        "address": "1015 Folsom Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "phone": "123-123-1234",
-        "website": "https://www.themusicalhop.com",
-        "facebook_link": "https://www.facebook.com/TheMusicalHop",
-        "seeking_talent": True,
-        "seeking_description": "We are on the lookout for a local artist to play every two weeks. Please call us.",
-        "image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
+        "id": venue_id,
+        "name": venue.name,
+        "genres": venue.genres,
+        "address": venue.address,
+        "city": venue.city,
+        "state": venue.state,
+        "phone": venue.phone,
+        "website": venue.website,
+        "facebook_link": venue.facebook_link,
+        "seeking_talent": "Yes" if venue.seeking_talent == True else "No",
+        "seeking_description": venue.seeking_description if venue.seeking_talent == True else "",
+        "image_link": venue.image_link,
     }
-    # TODO: populate form with values from venue with ID <venue_id>
+    
     return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 
