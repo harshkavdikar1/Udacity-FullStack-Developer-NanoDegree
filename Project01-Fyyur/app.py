@@ -13,6 +13,8 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
+import sys
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -38,8 +40,9 @@ class Venue(db.Model):
     address = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
     genres = db.Column(db.ARRAY(db.String), nullable=False)
-    image_link = db.Column(db.String(500), nullable=False)
-    website = db.Column(db.String(120), nullable=False)
+    image_link = db.Column(db.String(500), nullable=False,
+                           default='https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80')
+    website = db.Column(db.String(120), nullable=True)
     seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(500), nullable=True)
     facebook_link = db.Column(db.String(120), nullable=False)
@@ -245,14 +248,47 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-    # TODO: insert form data as a new Venue record in the db, instead
-    # TODO: modify data to be the data object returned from db insertion
+    """
+    Create a Venue Model and Commit the new Venue to the database.
+    Throw appropriate error if there is an exception.
+    """
+    error = False
 
-    # on successful db insert, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-    # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+    try:
+        venue = Venue(name=request.form["name"],
+                      city=request.form["city"],
+                      state=request.form["state"],
+                      address=request.form["address"],
+                      phone=request.form["phone"],
+                      genres=request.form.getlist("genre"),
+                      image_link=request.form.get("image_link"),
+                      website=request.form.get("website"),
+                      seeking_talent=request.form.get("seeking_talent"),
+                      seeking_description=request.form.get(
+                          "seeking_description"),
+                      facebook_link=request.form["facebook_link"]
+                      )
+
+        # Add new venue to the Database
+        db.session.add(venue)
+        # Commit the changes to the database
+        db.session.commit()
+    except:
+        # Set error flag to true
+        error = True
+        # Rollback the changes
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        # Show error mesaage to user
+        if error:
+            flash('An error occurred. Venue ' +
+                  request.form["name"] + ' could not be listed.')
+        # Show success mesaage to user
+        else:
+            flash('Venue ' + request.form['name'] +
+                  ' was successfully listed!')
+    # Redirect to home page
     return render_template('pages/home.html')
 
 
