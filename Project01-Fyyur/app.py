@@ -73,7 +73,8 @@ class Shows(db.Model):
         db.UniqueConstraint('artist_id', 'venue_id', 'start_time'),)
 
     show_id = db.Column(db.Integer, primary_key=True)
-    artist_id = db.Column(db.Integer, db.ForeignKey("Artist.id"), nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey(
+        "Artist.id"), nullable=False)
     venue_id = db.Column(db.Integer, db.ForeignKey("Venue.id"), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
     image_link = db.Column(db.String(500), nullable=False,
@@ -157,7 +158,7 @@ def show_venue(venue_id):
     # shows the venue page with the given venue_id
 
     venue = Venue.query.get(venue_id)
-    
+
     data = {
         "id": venue.id,
         "name": venue.name,
@@ -225,7 +226,8 @@ def create_venue_submission():
                       genres=request.form.getlist("genres"),
                       image_link=request.form.get("image_link"),
                       website=request.form.get("website"),
-                      seeking_talent=True if request.form.get("seeking_talent") else False,
+                      seeking_talent=True if request.form.get(
+                          "seeking_talent") else False,
                       seeking_description=request.form.get(
                           "seeking_description"),
                       facebook_link=request.form["facebook_link"]
@@ -258,10 +260,7 @@ def create_venue_submission():
 def delete_venue(venue_id):
     # TODO: Complete this endpoint for taking a venue_id, and using
     # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
-    return None
+    
 
 #  Artists
 #  ----------------------------------------------------------------
@@ -301,9 +300,9 @@ def search_artists():
 def show_artist(artist_id):
     # shows the venue page with the given venue_id
     # TODO: replace with real venue data from the venues table, using venue_id
-    
+
     artist = Artist.query.get(artist_id)
-    
+
     data = {
         "id": artist_id,
         "name": artist.name,
@@ -360,8 +359,8 @@ def edit_artist(artist_id):
         "phone": artist.phone,
         "website": artist.website,
         "facebook_link": artist.facebook_link,
-        "seeking_venue": artist.seeking_venue,
-        "seeking_description": artist.seeking_description,
+        "seeking_venue": "Yes" if artist.seeking_venue == True else "No",
+        "seeking_description": artist.seeking_description if artist.seeking_venue == True else "",
         "image_link": artist.image_link,
     }
 
@@ -425,7 +424,8 @@ def create_artist_submission():
                         genres=request.form.getlist("genres"),
                         image_link=request.form.get("image_link"),
                         website=request.form.get("website"),
-                        seeking_venue=True if request.form.get("seeking_venue") else False,
+                        seeking_venue=True if request.form.get(
+                            "seeking_venue") else False,
                         seeking_description=request.form.get(
                             "seeking_description"),
                         facebook_link=request.form["facebook_link"]
