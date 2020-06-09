@@ -380,9 +380,33 @@ def edit_artist(artist_id):
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
-    # TODO: take values from the form submitted, and update existing
-    # artist record with ID <artist_id> using the new attributes
 
+    error = False
+    try:
+        artist = Artist.query.get(artist_id)
+        artist.name = request.form["name"]
+        artist.city = request.form["city"]
+        artist.state = request.form["state"]
+        artist.phone = request.form["phone"]
+        artist.genres = request.form.getlist("genres")
+        artist.website = request.form.get("website")
+        artist.seeking_venue = True if request.form.get(
+            "seeking_venue") else False
+        artist.seeking_description = request.form.get("seeking_description")
+        artist.facebook_link = request.form["facebook_link"]
+
+        db.session.commit()
+    except:
+        # Set error flag to true
+        error = True
+        # Rollback the changes
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        # Show error mesaage to user
+        if error:
+            flash('An error occurred. Artist ' +
+                  request.form["name"] + ' could not be edited.')
     return redirect(url_for('show_artist', artist_id=artist_id))
 
 
@@ -406,28 +430,29 @@ def edit_venue(venue_id):
         "seeking_description": venue.seeking_description if venue.seeking_talent == True else "",
         "image_link": venue.image_link,
     }
-    
+
     return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-    
+
     error = False
     try:
         venue = Venue.query.get(venue_id)
-    
-        venue.name=request.form["name"]
-        venue.city=request.form["city"]
-        venue.state=request.form["state"]
-        venue.address=request.form["address"]
-        venue.phone=request.form["phone"]
-        venue.genres=request.form.getlist("genres")
-        venue.website=request.form.get("website")
-        venue.seeking_talent=True if request.form.get("seeking_talent") else False
-        venue.seeking_description=request.form.get("seeking_description")
-        venue.facebook_link=request.form["facebook_link"]
-    
+
+        venue.name = request.form["name"]
+        venue.city = request.form["city"]
+        venue.state = request.form["state"]
+        venue.address = request.form["address"]
+        venue.phone = request.form["phone"]
+        venue.genres = request.form.getlist("genres")
+        venue.website = request.form.get("website")
+        venue.seeking_talent = True if request.form.get(
+            "seeking_talent") else False
+        venue.seeking_description = request.form.get("seeking_description")
+        venue.facebook_link = request.form["facebook_link"]
+
         # Commit the changes to the database
         db.session.commit()
     except:
