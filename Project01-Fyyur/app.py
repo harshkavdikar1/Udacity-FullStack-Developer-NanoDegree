@@ -58,8 +58,9 @@ class Artist(db.Model):
     state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
     genres = db.Column(db.ARRAY(db.String), nullable=False)
-    image_link = db.Column(db.String(500), nullable=False)
-    website = db.Column(db.String(120), nullable=False)
+    image_link = db.Column(db.String(500), nullable=False,
+                           default='https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80')
+    website = db.Column(db.String(120), nullable=True)
     seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(500), nullable=True)
     facebook_link = db.Column(db.String(120), nullable=False)
@@ -76,7 +77,8 @@ class Shows(db.Model):
         "Artist.id"), nullable=False)
     venue_id = db.Column(db.Integer, db.ForeignKey("Venue.id"), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
-    image_link = db.Column(db.String(500), nullable=False)
+    image_link = db.Column(db.String(500), nullable=False,
+                           default='https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80')
 
 
 #----------------------------------------------------------------------------#
@@ -483,14 +485,40 @@ def create_artist_form():
 
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
-    # called upon submitting the new artist listing form
-    # TODO: insert form data as a new Venue record in the db, instead
-    # TODO: modify data to be the data object returned from db insertion
+    error = False
 
-    # on successful db insert, flash success
-    flash('Artist ' + request.form['name'] + ' was successfully listed!')
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.')
+    try:
+        artist = Artist(name=request.form["name"],
+                        city=request.form["city"],
+                        state=request.form["state"],
+                        phone=request.form["phone"],
+                        genres=request.form.getlist("genre"),
+                        image_link=request.form.get("image_link"),
+                        website=request.form.get("website"),
+                        seeking_venue=request.form.get("seeking_venue"),
+                        seeking_description=request.form.get(
+                            "seeking_description"),
+                        facebook_link=request.form["facebook_link"]
+                        )
+        # Add new artist to the Database
+        db.session.add(artist)
+        # Commit the changes to the database
+        db.session.commit()
+    except:
+        # Set error flag to true
+        error = True
+        # Rollback the changes
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        # Show error mesaage to user
+        if error:
+            flash('Artist ' + request.form['name'] + ' could not be listed!')
+        # Show success mesaage to user
+        else:
+            flash('Artist ' + request.form['name'] +
+                  ' was successfully listed!')
+    # Redirect to home page
     return render_template('pages/home.html')
 
 
@@ -550,14 +578,32 @@ def create_shows():
 
 @app.route('/shows/create', methods=['POST'])
 def create_show_submission():
-    # called to create new shows in the db, upon submitting new show listing form
-    # TODO: insert form data as a new Show record in the db, instead
+    error = False
 
-    # on successful db insert, flash success
-    flash('Show was successfully listed!')
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Show could not be listed.')
-    # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+    try:
+        show = Shows(venue_id=request.form["venue_id"],
+                    artist_id=request.form["artist_id"],
+                    start_time=request.form["start_time"],
+                    image_link=request.form.get("image_link")
+                    )
+        # Add new artist to the Database
+        db.session.add(show)
+        # Commit the changes to the database
+        db.session.commit()
+    except:
+        # Set error flag to true
+        error=True
+        # Rollback the changes
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        # Show error mesaage to user
+        if error:
+            flash('An error occurred. Show could not be listed.')
+        # Show success mesaage to user
+        else:
+            flash('Show was successfully listed!')
+    # Redirect to home page
     return render_template('pages/home.html')
 
 
@@ -572,7 +618,7 @@ def server_error(error):
 
 
 if not app.debug:
-    file_handler = FileHandler('error.log')
+    file_handler=FileHandler('error.log')
     file_handler.setFormatter(
         Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
