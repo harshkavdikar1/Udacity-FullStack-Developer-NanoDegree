@@ -138,9 +138,6 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
-    # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-    # seach for Hop should return "The Musical Hop".
-    # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
 
     word = "%" + request.form.get("search_term", "") + "%"
 
@@ -271,6 +268,7 @@ def delete_venue(venue_id):
     # TODO: Complete this endpoint for taking a venue_id, and using
     # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
     error = False
+
     try:
         Venue.query.filter_by(id=venue_id).delete()
         db.session.commit()
@@ -282,7 +280,7 @@ def delete_venue(venue_id):
         if error:
             flash('An error occurred. Venue with ' +
                   venue_id + ' could not be deleted.')
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
+    flash('Venue was deleted listed!')
 
     # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
     # clicking that button delete it from the db then redirect the user to the homepage
@@ -371,6 +369,29 @@ def show_artist(artist_id):
             data['upcoming_shows_count'] += 1
 
     return render_template('pages/show_artist.html', artist=data)
+
+
+@app.route('/artists/<artist_id>', methods=['DELETE'])
+def delete_artist(artist_id):
+    # TODO: Complete this endpoint for taking a venue_id, and using
+    # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
+    error = False
+    print(artist_id)
+    try:
+        Artist.query.filter_by(id=artist_id).delete()
+        db.session.commit()
+    except:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+        if error:
+            flash('An error occurred. Artists with ' +
+                  venue_id + ' could not be deleted.')
+    flash('Artist was deleted listed!')
+
+    return render_template('pages/home.html')
+
 
 #  Update
 #  ----------------------------------------------------------------
