@@ -333,8 +333,8 @@ def show_artist(artist_id):
     }
 
     for show in artist.show:
-        venue = Venue.query.get(show.venue_id)
-        if(show.start_time <= datetime.now()):
+        venue = show.venue
+        if show.start_time <= datetime.now():
             data['past_shows'].append({
                 "venue_id": venue.id,
                 "venue_name": venue.name,
@@ -412,8 +412,36 @@ def edit_venue(venue_id):
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-    # TODO: take values from the form submitted, and update existing
-    # venue record with ID <venue_id> using the new attributes
+    
+    error = False
+    try:
+        venue = Venue.query.get(venue_id)
+    
+        venue.name=request.form["name"]
+        venue.city=request.form["city"]
+        venue.state=request.form["state"]
+        venue.address=request.form["address"]
+        venue.phone=request.form["phone"]
+        venue.genres=request.form.getlist("genres")
+        venue.website=request.form.get("website")
+        venue.seeking_talent=True if request.form.get("seeking_talent") else False
+        venue.seeking_description=request.form.get("seeking_description")
+        venue.facebook_link=request.form["facebook_link"]
+    
+        # Commit the changes to the database
+        db.session.commit()
+    except:
+        # Set error flag to true
+        error = True
+        # Rollback the changes
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        # Show error mesaage to user
+        if error:
+            flash('An error occurred. Venue ' +
+                  request.form["name"] + ' could not be edited.')
+
     return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
