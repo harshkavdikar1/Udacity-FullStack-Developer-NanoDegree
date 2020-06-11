@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+node_modules/
+Project02-Trivia-API/frontend/
