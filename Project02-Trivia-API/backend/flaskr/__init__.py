@@ -63,18 +63,23 @@ def create_app(test_config=None):
     def get_questions():
         questions = list()
 
-        page = request.args["page"]
+        categories = list()
+
+        for category in Category.query.with_entities(Category.type).distinct():
+            categories.append(category)
+
+        page = int(request.args.get("page",0))
 
         start = (page-1)*10
         end = start + QUESTIONS_PER_PAGE
 
-        for question in Question.query.with_entities(Question.question).all():
-            questions.append(question)
+        questions = [question.format() for question in Question.query.all()]
 
         return jsonify({
             "questions": questions[start:end],
-            "success": True
-            "total_questions": len(questions)
+            "success": True,
+            "total_questions": len(questions),
+            "categories": categories
         })
 
     '''
@@ -95,6 +100,15 @@ def create_app(test_config=None):
     the form will clear and the question will appear at the end of the last page
     of the questions list in the "List" tab.  
     '''
+    @app.route("/questions", methods=["POST"])
+    def add_question():
+        data = request.get_json()
+        
+        question = Question(data["question"], data["answer"], data["category"], int(data["difficulty"]))
+
+        question.insert()
+
+        return jsonify(question.format())
 
     '''
     @TODO: 
