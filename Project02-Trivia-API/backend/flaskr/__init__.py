@@ -66,7 +66,7 @@ def create_app(test_config=None):
         categories = list()
 
         for category in Category.query.with_entities(Category.type).distinct():
-            categories.append(category)
+            categories.append(category.type)
 
         page = int(request.args.get("page",0))
 
@@ -163,7 +163,9 @@ def create_app(test_config=None):
     @app.route("/categories/<category_id>/questions", methods=["GET"])
     def get_questions_with_category(category_id):
 
-        questions = [question.format() for question in Question.query.filter_by(category=category_id)]
+        category_id = category_id + 1
+
+        questions = [question.format() for question in Question.query.filter_by(category=str(category_id))]
 
         current_category = Category.query.get(category_id)
 
@@ -185,6 +187,24 @@ def create_app(test_config=None):
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not. 
     '''
+    @app.route("/quizzes", methods=["POST"])
+    def get_quiz_questions():
+        
+        quiz = request.get_json()["quiz_category"]
+        
+        quiz_category = quiz["type"]
+        category_id = str(int(quiz["id"]) + 1)
+
+        previous_questions = request.get_json()["previous_questions"]
+
+        questions = Question.query.filter_by(category=category_id).filter(Question.id.notin_((previous_questions))).all()
+
+        questions = [question.format() for question in questions]
+
+        return jsonify({
+            "question": random.choice(questions) if questions else None
+        })
+
 
     '''
     @TODO: 
