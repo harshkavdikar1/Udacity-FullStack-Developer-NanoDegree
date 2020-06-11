@@ -37,10 +37,10 @@ def create_app(test_config=None):
     '''
     @app.route("/categories", methods=["GET"])
     def get_categories():
-        categories = list()
+        categories = dict()
 
-        for category in Category.query.with_entities(Category.type).distinct():
-            categories.append(category)
+        for category in Category.query.all():
+            categories[category.id] = category.type
 
         return jsonify({
             "categories": categories,
@@ -62,13 +62,13 @@ def create_app(test_config=None):
     @app.route("/questions", methods=["GET"])
     def get_questions():
         questions = list()
+        
+        categories = dict()
 
-        categories = list()
+        for category in Category.query.all():
+            categories[category.id] = category.type
 
-        for category in Category.query.order_by(Category.id).all():
-            categories.append(category.type)
-
-        page = int(request.args.get("page", 0))
+        page = int(request.args.get("page", 1))
 
         start = (page-1)*10
         end = start + QUESTIONS_PER_PAGE
@@ -118,10 +118,13 @@ def create_app(test_config=None):
     def add_question():
         data = request.get_json()
 
-        question = Question(data["question"], data["answer"],
-                            data["category"], int(data["difficulty"]))
+        try:
+            question = Question(data["question"], data["answer"],
+                                data["category"], int(data["difficulty"]))
 
-        question.insert()
+            question.insert()
+        except:
+            abort(500)
 
         return jsonify(question.format())
 
@@ -141,10 +144,10 @@ def create_app(test_config=None):
         if not request.json.get("searchTerm"):
             abort(404)
 
-        categories = list()
+        categories = dict()
 
-        for category in Category.query.with_entities(Category.type).distinct():
-            categories.append(category)
+        for category in Category.query.all():
+            categories[category.id] = category.type
 
         search_term = "%" + request.json.get("searchTerm", "") + "%"
 
@@ -173,7 +176,7 @@ def create_app(test_config=None):
     @app.route("/categories/<category_id>/questions", methods=["GET"])
     def get_questions_with_category(category_id):
 
-        category_id = int(category_id) + 1
+        category_id = category_id
 
         questions = [question.format() for question in Question.query.filter_by(
             category=str(category_id))]
@@ -209,7 +212,7 @@ def create_app(test_config=None):
         if "id" not in quiz:
             abort(422)
 
-        category_id = str(int(quiz["id"]) + 1)
+        category_id = quiz["id"]
 
         previous_questions = request.get_json()["previous_questions"]
 
