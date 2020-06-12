@@ -220,10 +220,22 @@ def create_app(test_config=None):
             "success": True
         })
 
+    @app.errorhandler(400)
+    def not_found(error):
+        '''
+        Error handler for the HTTP code 400 : Bad Request
+        '''
+
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
     @app.errorhandler(404)
     def not_found(error):
         '''
-        Error handler for the error 404 : Not Found
+        Error handler for the HTTP code 404 : Not Found
         '''
 
         return jsonify({
@@ -235,7 +247,7 @@ def create_app(test_config=None):
     @app.errorhandler(422)
     def not_found(error):
         '''
-        Error handler for the error 422 : Unprocessable
+        Error handler for the HTTP code 422 : Unprocessable
         '''
 
         return jsonify({
@@ -247,7 +259,7 @@ def create_app(test_config=None):
     @app.errorhandler(500)
     def not_found(error):
         '''
-        Error handler for the error 500
+        Error handler for the HTTP code 500
         '''
 
         return jsonify({
