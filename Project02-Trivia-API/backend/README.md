@@ -59,8 +59,19 @@ GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Sample Response:
-```
 
+```
+{
+    "categories": {
+        "1": "Science", 
+        "2": "Art", 
+        "3": "Geography", 
+        "4": "History", 
+        "5": "Entertainment", 
+        "6": "Sports"
+    }, 
+    "success": true
+}
 ```
 
 GET '/questions?page=<page_number>'
@@ -69,7 +80,34 @@ GET '/questions?page=<page_number>'
 - Sample Response:
 
 ```
-
+{
+    "categories": {
+        "1": "Science", 
+        "2": "Art", 
+        "3": "Geography", 
+        "4": "History", 
+        "5": "Entertainment", 
+        "6": "Sports"
+    }, 
+    "questions": [
+        {
+            "answer": "Maya Angelou", 
+            "category": 4, 
+            "difficulty": 2, 
+            "id": 5, 
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },  
+        {
+            "answer": "Escher", 
+            "category": 2, 
+            "difficulty": 1, 
+            "id": 16, 
+            "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+        }
+    ], 
+    "success": true, 
+    "total_questions": 2
+}
 ```
 
 DELETE /questions/<question_id> 
@@ -78,7 +116,10 @@ DELETE /questions/<question_id>
 - Sample Response:
 
 ```
-
+{
+    "deleted": "28", 
+    "success": true
+}
 ```
 
 POST /questions 
@@ -88,7 +129,13 @@ POST /questions
 - Sample response:
 
 ```
-
+{
+    "answer": "Escher", 
+    "category": 2, 
+    "difficulty": 1, 
+    "id": 16, 
+    "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+}
 ```
 
 POST /search 
@@ -98,7 +145,34 @@ POST /search
 - Sample response:
 
 ```
-
+{
+    "categories": {
+        "1": "Science", 
+        "2": "Art", 
+        "3": "Geography", 
+        "4": "History", 
+        "5": "Entertainment", 
+        "6": "Sports"
+    }, 
+    "questions": [
+        {
+            "answer": "Maya Angelou", 
+            "category": 4, 
+            "difficulty": 2, 
+            "id": 5, 
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },  
+        {
+            "answer": "Escher", 
+            "category": 2, 
+            "difficulty": 1, 
+            "id": 16, 
+            "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+        }
+    ], 
+    "success": true, 
+    "total_questions": 2
+}
 ```
 
 
@@ -108,7 +182,27 @@ GET /categories/<int:category_id>/questions
 - Sample response:
 
 ```
-
+{
+    "questions": [
+    {
+        "answer": "The Liver", 
+        "category": 1, 
+        "difficulty": 4, 
+        "id": 20, 
+        "question": "What is the heaviest organ in the human body?"
+    }, 
+    {
+        "answer": "Alexander Fleming", 
+        "category": 1, 
+        "difficulty": 3, 
+        "id": 21, 
+        "question": "Who discovered penicillin?"
+    }, 
+    ], 
+    "success": true, 
+    "total_questions": 2,
+    "current_category": 1
+}
 ```
 
 POST /quizzes 
@@ -118,7 +212,16 @@ POST /quizzes
 - Sapmle response:
 
 ```
-
+{
+    "question": {
+        "answer": "The Liver", 
+        "category": 1, 
+        "difficulty": 4, 
+        "id": 20, 
+        "question": "What is the heaviest organ in the human body?"
+    }, 
+    "success": true
+}
 ```
 
 ## Testing
