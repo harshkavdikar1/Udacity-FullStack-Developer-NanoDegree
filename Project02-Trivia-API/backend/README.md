@@ -85,12 +85,21 @@ POST /questions
 - Add a new question to the repository of available questions.
 - Request Arguments: None
 - Request body: {question:string, answer:string, difficulty:int, category:string}
-- Example response:
+- Sample response:
 
 ```
 
 ```
 
+POST /search 
+- Fetches all questions where a substring matches the search term (not case-sensitive)
+- Request Arguments: None
+- Request body: {searchTerm:string}
+- Sample response:
+
+```
+
+```
 
 ## Testing
 To run the tests, run
