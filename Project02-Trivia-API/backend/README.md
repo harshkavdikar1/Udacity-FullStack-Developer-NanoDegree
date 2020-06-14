@@ -104,8 +104,18 @@ POST /search
 
 GET /categories/<int:category_id>/questions 
 - Fetches a dictionary of questions for the specified category
-- Request argument: category_id:int
+- Request Argument: category_id:int
 - Sample response:
+
+```
+
+```
+
+POST /quizzes 
+- Fetches one random question within a specified category. Previously asked questions are not asked again.
+- Request Argument: None
+- Request body: {previous_questions: arr, quiz_category: {id:int, type:string}}
+- Sapmle response:
 
 ```
 
