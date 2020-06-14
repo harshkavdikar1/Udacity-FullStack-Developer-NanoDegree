@@ -101,6 +101,16 @@ POST /search
 
 ```
 
+
+GET /categories/<int:category_id>/questions 
+- Fetches a dictionary of questions for the specified category
+- Request argument: category_id:int
+- Sample response:
+
+```
+
+```
+
 ## Testing
 To run the tests, run
 ```
