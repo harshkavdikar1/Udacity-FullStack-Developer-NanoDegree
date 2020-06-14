@@ -81,6 +81,17 @@ DELETE /questions/<question_id>
 
 ```
 
+POST /questions 
+- Add a new question to the repository of available questions.
+- Request Arguments: None
+- Request body: {question:string, answer:string, difficulty:int, category:string}
+- Example response:
+
+```
+
+```
+
+
 ## Testing
 To run the tests, run
 ```
