@@ -72,6 +72,15 @@ GET '/questions?page=<page_number>'
 
 ```
 
+DELETE /questions/<question_id> 
+- Delete an existing questions from the repository of available questions.
+- Request Arguments: question_id:int
+- Sample Response:
+
+```
+
+```
+
 ## Testing
 To run the tests, run
 ```
