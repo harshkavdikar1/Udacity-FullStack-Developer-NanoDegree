@@ -72,6 +72,9 @@ def create_app(test_config=None):
 
         questions = [question.format() for question in Question.query.all()]
 
+        if start > len(questions):
+            abort(404)
+
         return jsonify({
             "questions": questions[start:end],
             "success": True,
@@ -94,7 +97,7 @@ def create_app(test_config=None):
                 abort(422)
             question.delete()
         except:
-            abort(500)
+            abort(422)
 
         return jsonify({
             "deleted": question_id,
@@ -121,7 +124,7 @@ def create_app(test_config=None):
 
             question.insert()
         except:
-            abort(500)
+            abort(422)
 
         return jsonify(question.format())
 
@@ -171,12 +174,13 @@ def create_app(test_config=None):
         category to be shown. 
         '''
 
-        category_id = category_id
-
         questions = [question.format() for question in Question.query.filter_by(
             category=str(category_id))]
 
-        current_category = Category.query.get(category_id)
+        try:
+            current_category = Category.query.get(category_id)
+        except:
+            abort(404)
 
         if not current_category or not questions:
             abort(404)
@@ -200,8 +204,10 @@ def create_app(test_config=None):
         one question at a time is displayed, the user is allowed to answer
         and shown whether they were correct or not. 
         '''
-
-        quiz = request.get_json()["quiz_category"]
+        try:
+            quiz = request.get_json()["quiz_category"]
+        except:
+            abort(422)
 
         if "id" not in quiz:
             abort(422)
