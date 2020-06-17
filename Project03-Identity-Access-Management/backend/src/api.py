@@ -39,7 +39,8 @@ def get_drink():
             "success" : True,
             "drinks" : drinks
         })
-    abort(404)
+    except:
+        abort(404)
 
 '''
 @TODO implement endpoint
@@ -81,7 +82,7 @@ def get_drink_details(jwt):
 def add_drinks(jwt):
 
     body = request.get_json()
-
+    print(body)
     if not body or not ('title' in body and 'recipe' in body):
         abort(422)
 
