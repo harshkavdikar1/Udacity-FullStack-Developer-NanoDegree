@@ -133,7 +133,8 @@ def patch_drinks(jwt, drink_id):
     if not drink:
         return jsonify({
             'success': False,
-            'error': 'Drink #' + drink_id + ' not found to be edited'
+            'error': 404,
+            'message': 'Drink #' + drink_id + ' not found to be edited'
         }), 404
     
     try:
@@ -177,7 +178,8 @@ def delete_drinks(jwt, drink_id):
     if not drink:
         return jsonify({
             'success': False,
-            'error': 'Drink #' + drink_id + ' not found to be edited'
+            'error': 404,
+            'message': 'Drink #' + drink_id + ' not found to be edited'
         }), 404
 
     try:
