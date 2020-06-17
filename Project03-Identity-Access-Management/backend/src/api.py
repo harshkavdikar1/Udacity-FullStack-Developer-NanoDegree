@@ -30,14 +30,16 @@ db_drop_and_create_all()
 @app.route("/drinks")
 def get_drink():
 
-    drinks = Drink.query.all()
+    try:
+        drinks = Drink.query.all()
 
-    drinks = [drink.short() for drink in drinks]
+        drinks = [drink.short() for drink in drinks]
 
-    return jsonify({
-        "success" : True,
-        "drinks" : drinks
-    })
+        return jsonify({
+            "success" : True,
+            "drinks" : drinks
+        })
+    abort(404)
 
 '''
 @TODO implement endpoint
@@ -51,14 +53,17 @@ def get_drink():
 @requires_auth('get:drinks-detail')
 def get_drink_details(jwt):
 
-    drinks = Drink.query.all()
+    try:
+        drinks = Drink.query.all()
 
-    drinks = [drink.long() for drink in drinks]
+        drinks = [drink.long() for drink in drinks]
 
-    return jsonify({
-        "success" : True,
-        "drinks" : drinks
-    })
+        return jsonify({
+            "success" : True,
+            "drinks" : drinks
+        })
+    except:
+        abort(404)
 
 
 '''
@@ -158,7 +163,13 @@ def delete_drinks(jwt, drink_id):
 
     drink = Drink.query.get(drink_id)
 
-    drink.delete()
+    if not drink:
+        abort(404)
+
+    try:
+        drink.delete()
+    except:
+        abort(422)
 
     return jsonify({
                 'success': True,
@@ -204,10 +215,17 @@ def bad_request(error):
     return jsonify({
                     "success": False, 
                     "error": 400,
-                    "message": "resource not found"
+                    "message": "Bad Request"
                     }), 400
 
 '''
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+@app.errorhandler(AuthError)
+def handle_auth_error(ex):
+    return jsonify({
+        "success": False,
+        "error": ex.status_code,
+        'message': ex.error
+    }), 401
