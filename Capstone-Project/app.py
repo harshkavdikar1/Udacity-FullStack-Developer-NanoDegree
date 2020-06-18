@@ -36,7 +36,11 @@ def create_app(test_config=None):
         actors = [actor.format() for actor in actors]
 
         if len(actors) < start or start < 0:
-            actors = []
+            return jsonify({
+                "error": 404,
+                "message": "No actors found in database.",
+                "success": False
+            }), 404
 
         return jsonify({
             "actors": actors[start:end],

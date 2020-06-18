@@ -110,6 +110,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["actors"])
         self.assertTrue(data["total_actors"])
 
+    def test_404_get_actors(self):
+        res = self.client().get('/actor?page=100000')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "No actors found in database.")
+        self.assertEqual(data["error"], 404)
+
 
 if __name__ == '__main__':
     unittest.main()
