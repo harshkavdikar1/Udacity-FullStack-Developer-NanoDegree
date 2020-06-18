@@ -110,6 +110,58 @@ will return
     "message": "Actor's Name is not provided."
 }
 
+### 3. PATCH /actors
+
+Edit an existing Actor
+
+```bash
+$ curl -X PATCH https://artist-capstone-fsnd-matthew.herokuapp.com/actors/1
+```
+
+- Request Arguments: **integer** `id from actor you want to update`
+- Request Headers: (_application/json_)
+       1. **string** `name` 
+       2. **integer** `age` 
+       3. **string** `gender`
+- Requires permission: `edit:actors`
+- Returns: 
+  1. **integer** `id from updated actor`
+  2. **boolean** `success`
+  3. List of dict of actors with following fields:
+      - **integer** `id`
+      - **string** `name`
+      - **string** `gender`
+      - **integer** `age`
+
+#### Example response
+```js
+{
+    "actor": {
+        "id": 1,
+        "name": "Marsh",
+        "age": 30,
+        "gender": "M"  
+    },
+    "success": true
+}
+```
+#### Errors
+If you try to update an actor with an invalid id it will throw an `404` error:
+
+```bash
+$ curl -X PATCH /actors/125
+```
+
+will return
+
+```js
+{
+  "error": 404,
+  "message": "Actor with id = 125 not found",
+  "success": false
+}
+```
+
 ### 4. DELETE /actors
 
 Delete an existing Actor
@@ -144,8 +196,8 @@ will return
 
 ```js
 {
-  "error": 404,
-  "message": "Actor with id = 125 not found.",
-  "success": false
+    "error": 404,
+    "message": "Actor with id = 125 not found.",
+    "success": false
 }
 ```
