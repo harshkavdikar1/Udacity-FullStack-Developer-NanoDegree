@@ -109,6 +109,7 @@ will return
     "error": 422,
     "message": "Actor's Name is not provided."
 }
+```
 
 ### 3. PATCH /actors
 

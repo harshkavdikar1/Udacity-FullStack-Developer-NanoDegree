@@ -24,7 +24,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/actor", methods=["GET"])
-    def get_actors():
+    @requires_auth('create:actor')
+    def get_actors(token):
 
         page = int(request.args.get("page", 1))
 
@@ -49,7 +50,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/actor", methods=["POST"])
-    def add_actor():
+    @requires_auth('create:actor')
+    def add_actor(token):
 
         data = request.get_json()
 
@@ -87,7 +89,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/actor/<actor_id>", methods=["PATCH"])
-    def update_actor(actor_id):
+    @requires_auth("edit:actor")
+    def update_actor(token, actor_id):
 
         try:
             actor_id = int(actor_id)
@@ -119,7 +122,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/actor/<actor_id>", methods=["DELETE"])
-    def delete_actor(actor_id):
+    @requires_auth("delete:actor")
+    def delete_actor(token, actor_id):
 
         try:
             actor_id = int(actor_id)
@@ -145,7 +149,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/movie", methods=["GET"])
-    def get_movies():
+    @requires_auth('read:movie')
+    def get_movies(token):
 
         page = int(request.args.get("page", 1))
 
@@ -170,7 +175,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/movie", methods=["POST"])
-    def add_movie():
+    @requires_auth('create:movie')
+    def add_movie(token):
 
         data = request.get_json()
 
@@ -201,7 +207,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/movie/<movie_id>", methods=["PATCH"])
-    def update_movie(movie_id):
+    @requires_auth('edit:movie')
+    def update_movie(token, movie_id):
 
         try:
             movie_id = int(movie_id)
@@ -234,7 +241,8 @@ def create_app(test_config=None):
         })
 
     @app.route("/movie/<movie_id>", methods=["DELETE"])
-    def delete_movie(movie_id):
+    @requires_auth('delete:movie')
+    def delete_movie(token, movie_id):
 
         try:
             movie_id = int(movie_id)
@@ -290,7 +298,6 @@ def create_app(test_config=None):
             "error": 400,
             "message": "Bad Request"
         }), 400
-
 
     @app.errorhandler(AuthError)
     def handle_auth_error(ex):
