@@ -259,9 +259,8 @@ def create_app(test_config=None):
             "success": True
         })
 
-
     @app.errorhandler(404)
-    def error_404(error):
+    def resource_not_found(error):
         return jsonify({
             "success": False,
             "error": 404,
@@ -269,7 +268,7 @@ def create_app(test_config=None):
         }), 404
 
     @app.errorhandler(422)
-    def error_422(error):
+    def unprocessable(error):
         return jsonify({
             "success": False,
             "error": 422,
@@ -277,12 +276,29 @@ def create_app(test_config=None):
         }), 422
 
     @app.errorhandler(500)
-    def error_500(error):
+    def server_error(error):
         return jsonify({
             "success": False,
             "error": 500,
             "message": "Something went wrong!!"
         }), 500
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
+
+    @app.errorhandler(AuthError)
+    def handle_auth_error(ex):
+        return jsonify({
+            "success": False,
+            "error": ex.status_code,
+            'message': ex.error
+        }), 401
 
     return app
 
