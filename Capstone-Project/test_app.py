@@ -119,6 +119,45 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "No actors found in database.")
         self.assertEqual(data["error"], 404)
+    
+    def test_delete_actors(self):
+        actor = {
+            "name": "Sara",
+            "age": "23",
+            "gender": "F"
+        }
+        res = self.client().post('/actor', json=actor)
+        data = json.loads(res.data)
+        actor = data["Actor"]
+
+        res = self.client().delete('/actor/{}'.format(actor["id"]))
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(data["actor_id"], actor["id"])
+
+    def test_422_delete_actors(self):
+        res = self.client().delete('/actor/abc')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Unprocessable")
+        self.assertEqual(data["error"], 422)
+
+    
+    def test_404_delete_actors(self):
+        res = self.client().delete('/actor/9999999')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
+        self.assertEqual(data["error"], 404)
 
 
 if __name__ == '__main__':

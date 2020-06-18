@@ -86,13 +86,44 @@ def create_app(test_config=None):
             "Actor": actor.format()
         })
 
+    @app.route("/actor/<actor_id>", methods=["DELETE"])
+    def delete_actor(actor_id):
+
+        try:
+            actor_id = int(actor_id)
+            actor = Actor.query.get(actor_id)
+        except:
+            abort(422)
+
+        if not actor:
+            return jsonify({
+                "error": 404,
+                "message": "Actor wth id = {} not found.".format(actor_id),
+                "success": False
+            }), 404
+
+        actor.delete()
+
+        return jsonify({
+            "actor_id": actor_id,
+            "success": True
+        })
+
     @app.errorhandler(404)
     def error_404(error):
         return jsonify({
             "success": False,
             "error": 404,
             "message": "Resource not found"
-        })
+        }), 404
+    
+    @app.errorhandler(422)
+    def error_422(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "Unprocessable"
+        }), 422
 
     return app
 
