@@ -23,6 +23,11 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
+Performance = db.Table('performances',
+    db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
+    db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'), primary_key=True)
+)
+
 class Movie(db.Model):
     __table_name__ = "movies"
 
