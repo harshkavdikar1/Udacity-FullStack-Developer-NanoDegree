@@ -12,6 +12,13 @@ def create_app(test_config=None):
     CORS(app)
     migrate = Migrate(app, db)
 
+    @app.route("/", methods=["GET"])
+    def home():
+        return jsonify({
+            "success": True,
+            "message": "Welcome please refer to API documentation for the endpoints"
+        })
+
     return app
 
 APP = create_app()
