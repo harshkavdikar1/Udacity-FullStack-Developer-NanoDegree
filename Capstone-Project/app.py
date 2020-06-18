@@ -232,6 +232,32 @@ def create_app(test_config=None):
             'movie': movie.format()
         })
 
+    @app.route("/movie/<movie_id>", methods=["DELETE"])
+    def delete_movie(movie_id):
+
+        try:
+            movie_id = int(movie_id)
+            movie = Movie.query.get(movie_id)
+        except:
+            abort(422)
+
+        if not movie:
+            return jsonify({
+                "error": 404,
+                "message": "Movie wth id = {} not found.".format(movie_id),
+                "success": False
+            }), 404
+
+        try:
+            movie.delete()
+        except:
+            abort(500)
+
+        return jsonify({
+            "movie_id": movie_id,
+            "success": True
+        })
+
 
     @app.errorhandler(404)
     def error_404(error):

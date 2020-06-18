@@ -201,7 +201,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertTrue(data["movie"])
+        self.assertTrue(data["movies"])
         self.assertTrue(data["total_movies"])
 
     def test_404_get_movies(self):
@@ -298,6 +298,43 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
 
+    def test_delete_movies(self):
+        movie = {
+            "name": "Sara",
+            "age": "23",
+            "gender": "F"
+        }
+        res = self.client().post('/movie', json=movie)
+        data = json.loads(res.data)
+        movie = data["movie"]
+
+        res = self.client().delete('/movie/{}'.format(movie["id"]))
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(data["movie_id"], movie["id"])
+
+    def test_422_delete_movies(self):
+        res = self.client().delete('/movie/abc')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Unprocessable")
+        self.assertEqual(data["error"], 422)
+
+    def test_404_delete_movies(self):
+        res = self.client().delete('/movie/9999999')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
+        self.assertEqual(data["error"], 404)
 
 
 if __name__ == '__main__':
