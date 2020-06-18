@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Integer
 
-
 database_name = "capstone"
 database_path = "postgres://{}/{}".format(
     'student:student@localhost:5432', database_name)
@@ -23,13 +22,15 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
+# Describes Many To Many relationship between actors and movies
 Performance = db.Table('performances',
     db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
     db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'), primary_key=True)
 )
 
+# Movies data model
 class Movie(db.Model):
-    __table_name__ = "movies"
+    __tablename__ = "movies"
 
     id = Column(db.Integer, primary_key=True)
     title = Column(db.String(100), nullable=False)
@@ -66,8 +67,9 @@ class Movie(db.Model):
             "rating": self.rating
         }
 
+# Actors data model
 class Actor(db.Model):
-    __table_name__ = "actor"
+    __tablename__ = "actors"
 
     id = Column(db.Integer, primary_key=True)
     name = Column(db.String(100), nullable=False)
