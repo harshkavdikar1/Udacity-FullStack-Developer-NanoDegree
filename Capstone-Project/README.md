@@ -109,3 +109,43 @@ will return
     "error": 422,
     "message": "Actor's Name is not provided."
 }
+
+### 4. DELETE /actors
+
+Delete an existing Actor
+
+```bash
+$ curl -X DELETE /actors/5
+```
+
+- Request Arguments: **integer** `id from actor you want to delete`
+- Request Headers: `None`
+- Requires permission: `delete:actors`
+- Returns: 
+  1. **integer** `id from deleted actor`
+  2. **boolean** `success`
+
+#### Example response
+```js
+{
+    "deleted": 5,
+    "success": true
+}
+
+```
+#### Errors
+If you try to delete actor with an invalid id, it will throw an `404` error:
+
+```bash
+$ curl -X DELETE /actors/125
+```
+
+will return
+
+```js
+{
+  "error": 404,
+  "message": "Actor with id = 125 not found.",
+  "success": false
+}
+```
