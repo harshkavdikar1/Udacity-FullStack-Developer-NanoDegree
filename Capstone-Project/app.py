@@ -1,8 +1,8 @@
-import os
+import os, sys
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import db, setup_db
+from models import db, setup_db, Actor, Movie
 from flask_migrate import Migrate
 
 def create_app(test_config=None):
@@ -17,6 +17,44 @@ def create_app(test_config=None):
         return jsonify({
             "success": True,
             "message": "Welcome please refer to API documentation for the endpoints"
+        })
+
+
+    @app.route("/actor", methods=["POST"])
+    def add_actor():
+
+        data = request.get_json()
+
+        if not data.get("name"):
+            return jsonify({
+                "success": False,
+                "error": 422,
+                "message": "Actor's Name is missing"
+            }), 422
+
+        if not data.get("age"):
+            return jsonify({
+                "success": False,
+                "error": 422,
+                "message": "Actor's age is missing"
+            }), 422
+
+        if not data.get("gender"):
+            return jsonify({
+                "success": False,
+                "error": 422,
+                "message": "Actor's gender is missing"
+            }), 422
+
+        try:
+            actor = Actor(name=data["name"], age=data["age"], gender=data["gender"])
+            actor.insert()
+        except Exception:
+            abort(500)
+
+        return jsonify({
+            "success": True,
+            "Actor": actor.format()
         })
 
     return app

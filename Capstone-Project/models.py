@@ -40,7 +40,7 @@ class Movie(db.Model):
     actors = db.relationship("Actor", secondary=Performance, lazy='subquery',
                              backref=db.backref('performances', lazy=True))
 
-    def __init__(title, rating, release_date=None, desc=None):
+    def __init__(self, title, rating, release_date=None, desc=None):
         self.title = title
         self.release_date = release_date
         self.desc = desc
@@ -78,7 +78,7 @@ class Actor(db.Model):
     actors = db.relationship("Movie", secondary=Performance, lazy='subquery',
                              backref=db.backref('performances', lazy=True))
 
-    def __init__(name, release_date=None, desc=None):
+    def __init__(self, name, age, gender):
         self.name = name
         self.age = age
         self.gender = gender
