@@ -100,6 +100,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Actor's gender is not provided.")
 
+    def test_get_actors(self):
+        res = self.client().get('/actor')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["actors"])
+        self.assertTrue(data["total_actors"])
+
 
 if __name__ == '__main__':
     unittest.main()
