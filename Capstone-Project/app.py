@@ -169,32 +169,6 @@ def create_app(test_config=None):
             "total_movies": len(movies)
         })
 
-    @app.errorhandler(404)
-    def error_404(error):
-        return jsonify({
-            "success": False,
-            "error": 404,
-            "message": "Resource not found"
-        }), 404
-
-    @app.errorhandler(422)
-    def error_422(error):
-        return jsonify({
-            "success": False,
-            "error": 422,
-            "message": "Unprocessable"
-        }), 422
-
-    @app.errorhandler(500)
-    def error_500(error):
-        return jsonify({
-            "success": False,
-            "error": 500,
-            "message": "Something went wrong!!"
-        }), 500
-
-    return app
-
     @app.route("/movie", methods=["POST"])
     def add_movie():
 
@@ -225,6 +199,65 @@ def create_app(test_config=None):
             "success": True,
             "movie": movie.format()
         })
+
+    @app.route("/movie/<movie_id>", methods=["PATCH"])
+    def update_movie(movie_id):
+
+        try:
+            movie_id = int(movie_id)
+            movie = Movie.query.get(movie_id)
+        except:
+            abort(422)
+
+        if not movie:
+            return jsonify({
+                "error": 404,
+                "message": "Movie wth id = {} not found.".format(movie_id),
+                "success": False
+            }), 404
+
+        data = request.get_json()
+
+        movie.name = data.get('name', movie.name)
+        movie.age = data.get('age', movie.age)
+        movie.gender = data.get('gender', movie.gender)
+
+        try:
+            movie.update()
+        except:
+            abort(500)
+
+        return jsonify({
+            'success': True,
+            'movie': movie.format()
+        })
+
+
+    @app.errorhandler(404)
+    def error_404(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "Resource not found"
+        }), 404
+
+    @app.errorhandler(422)
+    def error_422(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "Unprocessable"
+        }), 422
+
+    @app.errorhandler(500)
+    def error_500(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Something went wrong!!"
+        }), 500
+
+    return app
 
 
 APP = create_app()

@@ -216,7 +216,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_add_movie(self):
         movie = {
-            "title": "A fluke"
+            "title": "A fluke",
             "rating": 4,
             "desc": "A movie about a small boy"
         }
@@ -260,6 +260,44 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Movie's rating is not provided.")
+
+
+    def test_patch_movies(self):
+        movie = {
+            "title": "A fluke"
+            "rating": 4,
+            "desc": "A movie about a small boy"
+        }
+        res = self.client().patch('/movie/1', json=movie)
+        data = json.loads(res.data)
+        movie = data["movie"]
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(movie["title"], "A fluke")
+        self.assertEqual(movie["rating"], 4)
+        self.assertEqual(movie["desc"], "A movie about a small boy")
+
+    def test_422_patch_movies(self):
+        res = self.client().patch('/Movie/abc')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Unprocessable")
+        self.assertEqual(data["error"], 422)
+
+    def test_404_patch_movies(self):
+        res = self.client().patch('/movie/9999999')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
+        self.assertEqual(data["error"], 404)
+
 
 
 if __name__ == '__main__':
