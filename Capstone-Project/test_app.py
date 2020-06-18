@@ -70,7 +70,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Actor's Name is missing")
+        self.assertEqual(data["message"], "Actor's Name is not provided.")
 
     def test_422_add_actor_age(self):
         actor = {
@@ -84,7 +84,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Actor's age is missing")
+        self.assertEqual(data["message"], "Actor's age is not provided.")
 
     def test_422_add_actor_gender(self):
         actor = {
@@ -98,7 +98,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Actor's gender is missing")
+        self.assertEqual(data["message"], "Actor's gender is not provided.")
 
 
 if __name__ == '__main__':
