@@ -23,7 +23,7 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
-class movies(db.Model):
+class Movie(db.Model):
     __table_name__ = "movies"
 
     id = Column(db.Integer, primary_key=True)
@@ -31,13 +31,14 @@ class movies(db.Model):
     release_date = Column(db.DateTime, nullable=True)
     desc = Column(db.String(1000), nullable=True)
     rating = Column(db.Integer, nullable=False)
-    actors = db.relationship("actor", secondary=Performance, lazy='subquery',
-                             backref=db.backref('performance', lazy=True))
+    actors = db.relationship("Actor", secondary=Performance, lazy='subquery',
+                             backref=db.backref('performances', lazy=True))
 
-    def __init__(title, release_date=None, desc=None):
+    def __init__(title, rating, release_date=None, desc=None):
         self.title = title
         self.release_date = release_date
         self.desc = desc
+        self.rating = rating
 
     def insert(self):
         db.session.add(self)
@@ -48,7 +49,7 @@ class movies(db.Model):
 
     def delete(self):
         db.session.delete(self)
-        db.commit()
+        db.session.commit()
 
     def format(self):
 
@@ -58,4 +59,39 @@ class movies(db.Model):
             "release_date": self.release_date,
             "description": self.desc,
             "rating": self.rating
+        }
+
+class Actor(db.Model):
+    __table_name__ = "actor"
+
+    id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(100), nullable=False)
+    gender = Column(db.String(1), nullable=False)
+    age = Column(db.Integer, nullable=False)
+    actors = db.relationship("Movie", secondary=Performance, lazy='subquery',
+                             backref=db.backref('performances', lazy=True))
+
+    def __init__(name, release_date=None, desc=None):
+        self.name = name
+        self.age = age
+        self.gender = gender
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+
+        return {
+            "id": self.id,
+            "name": self.name,
+            "age": self.age,
+            "gender": self.gender
         }
