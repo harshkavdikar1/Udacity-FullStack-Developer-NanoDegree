@@ -86,6 +86,38 @@ def create_app(test_config=None):
             "Actor": actor.format()
         })
 
+    @app.route("/actor/<actor_id>", methods=["PATCH"])
+    def update_actor(actor_id):
+
+        try:
+            actor_id = int(actor_id)
+            actor = Actor.query.get(actor_id)
+        except:
+            abort(422)
+
+        if not actor:
+            return jsonify({
+                "error": 404,
+                "message": "Actor wth id = {} not found.".format(actor_id),
+                "success": False
+            }), 404
+
+        data = request.get_json()
+
+        actor.name = data.get('name', actor.name)
+        actor.age = data.get('age', actor.age)
+        actor.gender = data.get('gender', actor.gender)
+
+        try:
+            actor.update()
+        except:
+            abort(500)
+
+        return jsonify({
+            'success': True,
+            'actor': actor.format()
+        })
+
     @app.route("/actor/<actor_id>", methods=["DELETE"])
     def delete_actor(actor_id):
 
@@ -102,7 +134,10 @@ def create_app(test_config=None):
                 "success": False
             }), 404
 
-        actor.delete()
+        try:
+            actor.delete()
+        except:
+            abort(500)
 
         return jsonify({
             "actor_id": actor_id,
@@ -116,7 +151,7 @@ def create_app(test_config=None):
             "error": 404,
             "message": "Resource not found"
         }), 404
-    
+
     @app.errorhandler(422)
     def error_422(error):
         return jsonify({
@@ -124,6 +159,14 @@ def create_app(test_config=None):
             "error": 422,
             "message": "Unprocessable"
         }), 422
+
+    @app.errorhandler(500)
+    def error_500(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Something went wrong!!"
+        }), 500
 
     return app
 

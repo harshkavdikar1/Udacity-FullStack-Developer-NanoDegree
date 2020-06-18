@@ -119,7 +119,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "No actors found in database.")
         self.assertEqual(data["error"], 404)
-    
+
     def test_delete_actors(self):
         actor = {
             "name": "Sara",
@@ -148,9 +148,44 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Unprocessable")
         self.assertEqual(data["error"], 422)
 
-    
     def test_404_delete_actors(self):
         res = self.client().delete('/actor/9999999')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
+        self.assertEqual(data["error"], 404)
+
+    def test_patch_actors(self):
+        actor = {
+            "name": "Marsh",
+            "age": 30,
+            "gender": "M"
+        }
+        res = self.client().patch('/actor/1', json=actor)
+        data = json.loads(res.data)
+        actor = data["actor"]
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(actor["name"], "Marsh")
+        self.assertEqual(actor["age"], 30)
+        self.assertEqual(actor["gender"], "M")
+
+    def test_422_patch_actors(self):
+        res = self.client().patch('/actor/abc')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Unprocessable")
+        self.assertEqual(data["error"], 422)
+
+    def test_404_patch_actors(self):
+        res = self.client().patch('/actor/9999999')
 
         data = json.loads(res.data)
 
