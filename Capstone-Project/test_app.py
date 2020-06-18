@@ -214,6 +214,53 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "No movies found in database.")
         self.assertEqual(data["error"], 404)
 
+    def test_add_movie(self):
+        movie = {
+            "title": "A fluke"
+            "rating": 4,
+            "desc": "A movie about a small boy"
+        }
+
+        res = self.client().post('/movie', json=movie)
+
+        data = json.loads(res.data)
+
+        mov = data["movie"]
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(mov["title"], movie["title"])
+        self.assertEqual(mov["rating"], movie["rating"])
+        self.assertEqual(mov["desc"], movie["desc"])
+        self.assertTrue(mov["id"])
+
+    def test_422_add_movie_name(self):
+        movie = {
+            "rating": 4,
+            "desc": "A movie about a small boy"
+        }
+
+        res = self.client().post('/movie', json=movie)
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Movie's Name is not provided.")
+
+    def test_422_add_movie_age(self):
+        movie = {
+            "title": "John",
+            "rating": 5
+        }
+
+        res = self.client().post('/movie', json=movie)
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Movie's rating is not provided.")
+
 
 if __name__ == '__main__':
     unittest.main()

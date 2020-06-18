@@ -143,7 +143,7 @@ def create_app(test_config=None):
             "actor_id": actor_id,
             "success": True
         })
-    
+
     @app.route("/movie", methods=["GET"])
     def get_movies():
 
@@ -168,7 +168,6 @@ def create_app(test_config=None):
             "success": True,
             "total_movies": len(movies)
         })
-
 
     @app.errorhandler(404)
     def error_404(error):
@@ -195,6 +194,37 @@ def create_app(test_config=None):
         }), 500
 
     return app
+
+    @app.route("/movie", methods=["POST"])
+    def add_movie():
+
+        data = request.get_json()
+
+        if not data.get("title"):
+            return jsonify({
+                "success": False,
+                "error": 422,
+                "message": "Movie's title is not provided."
+            }), 422
+
+        if not data.get("rating"):
+            return jsonify({
+                "success": False,
+                "error": 422,
+                "message": "Movie's rating is not provided."
+            }), 422
+
+        try:
+            movie = movie(title=data["title"], rating=data["rating"], release_date=data.get(
+                "release_date"), desc=data.get("description"))
+            movie.insert()
+        except Exception:
+            abort(500)
+
+        return jsonify({
+            "success": True,
+            "movie": movie.format()
+        })
 
 
 APP = create_app()
