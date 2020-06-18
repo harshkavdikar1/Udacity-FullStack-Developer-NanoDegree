@@ -233,7 +233,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(mov["desc"], movie["desc"])
         self.assertTrue(mov["id"])
 
-    def test_422_add_movie_name(self):
+    def test_422_add_movie_title(self):
         movie = {
             "rating": 4,
             "desc": "A movie about a small boy"
@@ -245,12 +245,11 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Movie's Name is not provided.")
+        self.assertEqual(data["message"], "Movie's title is not provided.")
 
-    def test_422_add_movie_age(self):
+    def test_422_add_movie_rating(self):
         movie = {
-            "title": "John",
-            "rating": 5
+            "title": "John"
         }
 
         res = self.client().post('/movie', json=movie)
@@ -264,7 +263,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_patch_movies(self):
         movie = {
-            "title": "A fluke"
+            "title": "A fluke",
             "rating": 4,
             "desc": "A movie about a small boy"
         }
@@ -279,7 +278,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(movie["desc"], "A movie about a small boy")
 
     def test_422_patch_movies(self):
-        res = self.client().patch('/Movie/abc')
+        res = self.client().patch('/movie/abc')
 
         data = json.loads(res.data)
 
@@ -300,9 +299,9 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_delete_movies(self):
         movie = {
-            "name": "Sara",
-            "age": "23",
-            "gender": "F"
+            "title": "A fluke",
+            "rating": 4,
+            "desc": "A movie about a small boy"
         }
         res = self.client().post('/movie', json=movie)
         data = json.loads(res.data)

@@ -63,7 +63,7 @@ class Movie(db.Model):
             "id": self.id,
             "title": self.title,
             "release_date": self.release_date,
-            "description": self.desc,
+            "desc": self.desc,
             "rating": self.rating
         }
 

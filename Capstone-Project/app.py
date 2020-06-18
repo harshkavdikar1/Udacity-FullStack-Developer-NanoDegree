@@ -189,8 +189,8 @@ def create_app(test_config=None):
             }), 422
 
         try:
-            movie = movie(title=data["title"], rating=data["rating"], release_date=data.get(
-                "release_date"), desc=data.get("description"))
+            movie = Movie(title=data["title"], rating=data["rating"], release_date=data.get(
+                "release_date"), desc=data.get("desc"))
             movie.insert()
         except Exception:
             abort(500)
@@ -218,9 +218,10 @@ def create_app(test_config=None):
 
         data = request.get_json()
 
-        movie.name = data.get('name', movie.name)
-        movie.age = data.get('age', movie.age)
-        movie.gender = data.get('gender', movie.gender)
+        movie.title = data.get('title', movie.title)
+        movie.rating = data.get('rating', movie.rating)
+        movie.desc = data.get('desc', movie.desc)
+        movie.release_date = data.get('release_date', movie.release_date)
 
         try:
             movie.update()
