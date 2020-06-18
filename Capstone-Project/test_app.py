@@ -194,6 +194,26 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
 
+    def test_get_movies(self):
+        res = self.client().get('/movie')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["movie"])
+        self.assertTrue(data["total_movies"])
+
+    def test_404_get_movies(self):
+        res = self.client().get('/movie?page=100000')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "No movies found in database.")
+        self.assertEqual(data["error"], 404)
+
 
 if __name__ == '__main__':
     unittest.main()

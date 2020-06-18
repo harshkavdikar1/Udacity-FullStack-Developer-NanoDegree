@@ -143,6 +143,32 @@ def create_app(test_config=None):
             "actor_id": actor_id,
             "success": True
         })
+    
+    @app.route("/movie", methods=["GET"])
+    def get_movies():
+
+        page = int(request.args.get("page", 1))
+
+        start = (page - 1)*ROWS_PER_PAGE
+        end = start + ROWS_PER_PAGE
+
+        movies = Movie.query.all()
+
+        movies = [movie.format() for movie in movies]
+
+        if len(movies) < start or start < 0:
+            return jsonify({
+                "error": 404,
+                "message": "No movies found in database.",
+                "success": False
+            }), 404
+
+        return jsonify({
+            "movies": movies[start:end],
+            "success": True,
+            "total_movies": len(movies)
+        })
+
 
     @app.errorhandler(404)
     def error_404(error):
