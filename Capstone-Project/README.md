@@ -157,6 +157,7 @@ will return
 }
 ```
 
+# <a name="patch-actors"></a>
 ### 3. PATCH /actors
 
 Edit an existing Actor
@@ -209,6 +210,7 @@ will return
 }
 ```
 
+# <a name="delete-actors"></a>
 ### 4. DELETE /actors
 
 Delete an existing Actor
@@ -249,6 +251,7 @@ will return
 }
 ```
 
+# <a name="get-movies"></a>
 ### 5. GET /movies
 
 Query paginated movies.
@@ -299,6 +302,7 @@ will return
 }
 ```
 
+# <a name="post-movies"></a>
 ### 6. POST /movies
 
 Insert new Movie into database.
@@ -345,6 +349,7 @@ will return
 }
 ```
 
+# <a name="patch-movies"></a>
 ### 7. PATCH /movies
 
 Edit an existing Movie
@@ -395,6 +400,7 @@ will return
 }
 ```
 
+# <a name="delete-movies"></a>
 ### 8. DELETE /movies
 
 Delete an existing movie
