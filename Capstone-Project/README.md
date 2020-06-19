@@ -27,48 +27,54 @@ Make sure you `cd` into the correct folder (with all app files) before following
 Also, you need the latest version of [Python 3](https://www.python.org/downloads/)
 and [postgres](https://www.postgresql.org/download/) installed on your machine.
 
-To start and run the local development server,
+To start and run the local development server.
 
-1. Initialize and activate a virtualenv:
-    ```bash
-    $ virtualenv --no-site-packages env_capstone
-    $ source env_capstone/scripts/activate
-    ```
+<ul>
+<li> Initialize and activate a virtualenv: </li>
 
-2. Install the dependencies:
-    ```bash
-    $ pip install -r requirements.txt
-    ```
+```bash
+$ virtualenv --no-site-packages env_capstone
+$ source env_capstone/scripts/activate
+```
 
-3. Setup Auth0
-    If you only want to test the API (i.e. Project Reviewer), you can
-    simply take the existing bearer tokens in `config.py`.
+<li> Install the dependencies: </li>
 
-    If you already know your way around `Auth0`, just insert your data 
-    into `config.py` => auth0_config.
+```bash
+$ pip install -r requirements.txt
+```
 
-    FYI: Here are the steps I followed to enable [authentification](#authentification).
+<li> Setup Auth0 </li>
+If you only want to test the API (i.e. Project Reviewer), you can
+simply take the existing bearer tokens in `config.py`.
 
-4. Run the development server:
-    ```bash 
-    $ python app.py
-    ```
+If you already know your way around `Auth0`, just insert your data 
+into `config.py` => auth0_config.
 
-5. (optional) To execute tests, run
-    ```bash 
-    $ python test_app.py
-    ```
-    If you choose to run all tests, it should give this response if everything went fine:
+FYI: Here are the steps I followed to enable [authentification](#authentification).
 
-    ```bash
-    $ python test_app.py
-    .............................
-    ----------------------------------------------------------------------
-    Ran 29 tests in 15.906s
+<li> Run the development server: </li>
 
-    OK
+```bash 
+$ python app.py
+```
 
-    ```
+<li> (optional) To execute tests, run </li>
+
+```bash 
+$ python test_app.py
+```
+If you choose to run all tests, it should give this response if everything went fine:
+
+```bash
+$ python test_app.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 15.906s
+
+OK
+
+```
+</ul>
 
 <a name="api"></a>
 ## API Documentation
