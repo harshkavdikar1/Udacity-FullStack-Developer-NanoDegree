@@ -440,3 +440,23 @@ will return
     "success": false
 }
 ```
+
+# <a name="authentification"></a>
+## Authentification
+
+All API Endpoints are decorated with Auth0 permissions. To use the project locally, you need to config Auth0 accordingly
+
+### Auth0 for locally use
+#### Create an App & API
+
+1. Login to https://manage.auth0.com/ 
+2. Click on Applications Tab
+3. Create Application
+4. Give it a name like `Music` and select "Regular Web Application"
+5. Go to Settings and find `domain`. Copy & paste it into config.py => auth0_config['AUTH0_DOMAIN'] (i.e. replace `"example-matthew.eu.auth0.com"`)
+6. Click on API Tab 
+7. Create a new API:
+   1. Name: `Music`
+   2. Identifier `Music`
+   3. Keep Algorithm as it is
+8. Go to Settings and find `Identifier`. Copy & paste it into config.py => auth0_config['API_AUDIENCE'] (i.e. replace `"Example"`)
