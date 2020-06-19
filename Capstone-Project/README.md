@@ -30,45 +30,45 @@ and [postgres](https://www.postgresql.org/download/) installed on your machine.
 To start and run the local development server,
 
 1. Initialize and activate a virtualenv:
-```bash
-$ virtualenv --no-site-packages env_capstone
-$ source env_capstone/scripts/activate
-```
+    ```bash
+    $ virtualenv --no-site-packages env_capstone
+    $ source env_capstone/scripts/activate
+    ```
 
 2. Install the dependencies:
-```bash
-$ pip install -r requirements.txt
-```
+    ```bash
+    $ pip install -r requirements.txt
+    ```
 
 3. Setup Auth0
-If you only want to test the API (i.e. Project Reviewer), you can
-simply take the existing bearer tokens in `config.py`.
+    If you only want to test the API (i.e. Project Reviewer), you can
+    simply take the existing bearer tokens in `config.py`.
 
-If you already know your way around `Auth0`, just insert your data 
-into `config.py` => auth0_config.
+    If you already know your way around `Auth0`, just insert your data 
+    into `config.py` => auth0_config.
 
-FYI: Here are the steps I followed to enable [authentification](#authentification).
+    FYI: Here are the steps I followed to enable [authentification](#authentification).
 
 4. Run the development server:
-```bash 
-$ python app.py
-```
+    ```bash 
+    $ python app.py
+    ```
 
 5. (optional) To execute tests, run
-```bash 
-$ python test_app.py
-```
-If you choose to run all tests, it should give this response if everything went fine:
+    ```bash 
+    $ python test_app.py
+    ```
+    If you choose to run all tests, it should give this response if everything went fine:
 
-```bash
-$ python test_app.py
-.............................
-----------------------------------------------------------------------
-Ran 29 tests in 15.906s
+    ```bash
+    $ python test_app.py
+    .............................
+    ----------------------------------------------------------------------
+    Ran 29 tests in 15.906s
 
-OK
+    OK
 
-```
+    ```
 
 <a name="api"></a>
 ## API Documentation
