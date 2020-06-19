@@ -49,6 +49,7 @@ Each ressource documentation is clearly structured:
 5. Example Response.
 6. Error Handling (`curl` command to trigger error + error response)
 
+# <a name="get-actors"></a>
 ### 1. GET /actors
 
 Query paginated actors.
@@ -106,6 +107,7 @@ will return
 }
 ```
 
+# <a name="post-actors"></a>
 ### 2. POST /actors
 
 Insert new actor into database.
