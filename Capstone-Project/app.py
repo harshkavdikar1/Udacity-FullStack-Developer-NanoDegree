@@ -27,6 +27,14 @@ def create_app(test_config=None):
     @app.route("/actor", methods=["GET"])
     @requires_auth('read:actor')
     def get_actors(token):
+        """
+        Returns paginated actors object
+        Tested by:
+            Success:
+                - test_get_actors
+            Error:
+                - test_404_get_actors
+        """
 
         page = int(request.args.get("page", 1))
 
@@ -53,6 +61,16 @@ def create_app(test_config=None):
     @app.route("/actor", methods=["POST"])
     @requires_auth('create:actor')
     def add_actor(token):
+        """
+        Inserts a new Actor
+        Tested by:
+            Success:
+                - test_add_actor
+            Error:
+                - test_422_add_actor_name
+                - test_422_add_actor_age
+                - test_422_add_actor_gender
+        """
 
         data = request.get_json()
 
@@ -92,7 +110,16 @@ def create_app(test_config=None):
     @app.route("/actor/<actor_id>", methods=["PATCH"])
     @requires_auth("edit:actor")
     def update_actor(token, actor_id):
-
+        """
+        Edit an existing Actor
+        Tested by:
+            Success:
+                - test_patch_actors
+            Error:
+                - test_422_patch_actors
+                - test_404_patch_actors
+                - test_401_patch_actors
+        """
         try:
             actor_id = int(actor_id)
             actor = Actor.query.get(actor_id)
@@ -125,6 +152,16 @@ def create_app(test_config=None):
     @app.route("/actor/<actor_id>", methods=["DELETE"])
     @requires_auth("delete:actor")
     def delete_actor(token, actor_id):
+        """
+        Delete an existing Actor
+        Tested by:
+            Success:
+                - test_delete_actors
+            Error:
+                - test_404_delete_actors
+                - test_403_delete_actors
+                - test_422_delete_actors
+        """
 
         try:
             actor_id = int(actor_id)
@@ -152,6 +189,15 @@ def create_app(test_config=None):
     @app.route("/movie", methods=["GET"])
     @requires_auth('read:movie')
     def get_movies(token):
+        """
+        Returns paginated movies object
+        Tested by:
+            Success:
+                - test_get_movies
+            Error:
+                - test_401_get_actors_bearer_missing
+                - test_404_get_movies
+        """
 
         page = int(request.args.get("page", 1))
 
@@ -178,6 +224,15 @@ def create_app(test_config=None):
     @app.route("/movie", methods=["POST"])
     @requires_auth('create:movie')
     def add_movie(token):
+        """
+        Inserts a new movie
+        Tested by:
+            Success:
+                - test_add_movie
+            Error:
+                - test_422_add_movie_title
+                - test_422_add_movie_rating
+        """
 
         data = request.get_json()
 
@@ -210,7 +265,16 @@ def create_app(test_config=None):
     @app.route("/movie/<movie_id>", methods=["PATCH"])
     @requires_auth('edit:movie')
     def update_movie(token, movie_id):
-
+        """
+        Edit an existing Movie
+        Tested by:
+            Success:
+                - test_patch_movies
+            Error:
+                - test_422_patch_movies
+                - test_404_patch_movies
+                - test_401_patch_movies
+        """
         try:
             movie_id = int(movie_id)
             movie = Movie.query.get(movie_id)
@@ -244,6 +308,16 @@ def create_app(test_config=None):
     @app.route("/movie/<movie_id>", methods=["DELETE"])
     @requires_auth('delete:movie')
     def delete_movie(token, movie_id):
+        """
+        Delete an existing Movie
+        Tested by:
+            Success:
+                - test_delete_movies
+            Error:
+                - test_403_delete_movies
+                - test_404_delete_movies
+                - test_422_delete_movies
+        """
 
         try:
             movie_id = int(movie_id)
