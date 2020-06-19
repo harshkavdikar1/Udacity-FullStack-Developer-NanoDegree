@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, Actor, Movie
 from flask_migrate import Migrate
+from auth import requires_auth, AuthError
 
 
 def create_app(test_config=None):
@@ -24,7 +25,7 @@ def create_app(test_config=None):
         })
 
     @app.route("/actor", methods=["GET"])
-    @requires_auth('create:actor')
+    @requires_auth('read:actor')
     def get_actors(token):
 
         page = int(request.args.get("page", 1))
