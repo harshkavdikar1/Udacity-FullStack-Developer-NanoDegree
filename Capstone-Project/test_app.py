@@ -5,7 +5,19 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
 from models import setup_db, Movie, Actor, Performance
+from config import bearer_tokens
 
+casting_assistant_auth_header = {
+    'Authorization': bearer_tokens['assistant']
+}
+
+casting_director_auth_header = {
+    'Authorization': bearer_tokens['director']
+}
+
+executive_producer_auth_header = {
+    'Authorization': bearer_tokens['producer']
+}
 
 class TriviaTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
