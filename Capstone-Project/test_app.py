@@ -217,6 +217,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
 
+    def test_401_patch_actors(self):
+        res = self.client().patch('/actor/1')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"]["code"], "authorization_header_missing")
+        self.assertEqual(data["message"]["description"], "Authorization header is expected.")
+        self.assertEqual(data["error"], 401)
+
     def test_get_movies(self):
         res = self.client().get('/movie', headers=producer_auth_header)
 
@@ -226,6 +237,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data["movies"])
         self.assertTrue(data["total_movies"])
+    
+    def test_401_get_actors_bearer_missing(self):
+        res = self.client().get('/movie', headers={"Authorization": "abc"})
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"]["code"], "invalid_header")
+        self.assertEqual(data["message"]["description"], "Authorization header must be of type token bearer.")
+        self.assertEqual(data["error"], 401)
 
     def test_404_get_movies(self):
         res = self.client().get('/movie?page=100000', headers=producer_auth_header)
@@ -319,6 +341,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
+    
+    def test_401_patch_movies(self):
+        res = self.client().patch('/movie/1')
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"]["code"], "authorization_header_missing")
+        self.assertEqual(data["message"]["description"], "Authorization header is expected.")
+        self.assertEqual(data["error"], 401)
 
     def test_delete_movies(self):
         movie = {
