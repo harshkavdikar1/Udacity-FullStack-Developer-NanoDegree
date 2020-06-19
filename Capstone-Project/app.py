@@ -344,6 +344,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(404)
     def resource_not_found(error):
+        """
+        Error Handler for 404
+        """
         return jsonify({
             "success": False,
             "error": 404,
@@ -352,6 +355,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(422)
     def unprocessable(error):
+        """
+        Error Handler for 422
+        """
         return jsonify({
             "success": False,
             "error": 422,
@@ -360,6 +366,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(500)
     def server_error(error):
+        """
+        Error Handler for 500
+        """
         return jsonify({
             "success": False,
             "error": 500,
@@ -368,6 +377,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(400)
     def bad_request(error):
+        """
+        Error Handler for 400
+        """
         return jsonify({
             "success": False,
             "error": 400,
@@ -376,6 +388,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(AuthError)
     def handle_auth_error(ex):
+        """
+        Error Handler for Authorization Error
+        """
         return jsonify({
             "success": False,
             "error": ex.status_code,
