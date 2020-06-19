@@ -169,6 +169,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
+    
+    def test_403_delete_actors(self):
+        res = self.client().delete('/actor/1', headers=assistant_auth_header)
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"]["code"], "Unauthorized")
+        self.assertEqual(data["message"]["description"], "Permission not found.")
+        self.assertEqual(data["error"], 403)
 
     def test_patch_actors(self):
         actor = {
@@ -347,6 +358,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
 
+    def test_403_delete_movies(self):
+        res = self.client().delete('/movie/1', headers=assistant_auth_header)
+
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"]["code"], "Unauthorized")
+        self.assertEqual(data["message"]["description"], "Permission not found.")
+        self.assertEqual(data["error"], 403)
 
 if __name__ == '__main__':
     unittest.main()

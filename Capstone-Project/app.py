@@ -306,7 +306,7 @@ def create_app(test_config=None):
             "success": False,
             "error": ex.status_code,
             'message': ex.error
-        }), 401
+        }), ex.status_code
 
     return app
 
