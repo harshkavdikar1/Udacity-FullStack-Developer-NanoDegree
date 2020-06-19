@@ -7,15 +7,15 @@ from app import create_app
 from models import setup_db, Movie, Actor, Performance
 from config import bearer_tokens
 
-casting_assistant_auth_header = {
+assistant_auth_header = {
     'Authorization': bearer_tokens['assistant']
 }
 
-casting_director_auth_header = {
+director_auth_header = {
     'Authorization': bearer_tokens['director']
 }
 
-executive_producer_auth_header = {
+producer_auth_header = {
     'Authorization': bearer_tokens['producer']
 }
 
@@ -58,7 +58,7 @@ class TriviaTestCase(unittest.TestCase):
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor)
+        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -76,7 +76,7 @@ class TriviaTestCase(unittest.TestCase):
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor)
+        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -90,7 +90,7 @@ class TriviaTestCase(unittest.TestCase):
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor)
+        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -104,7 +104,7 @@ class TriviaTestCase(unittest.TestCase):
             "age": "20"
         }
 
-        res = self.client().post('/actor', json=actor)
+        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -113,7 +113,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor's gender is not provided.")
 
     def test_get_actors(self):
-        res = self.client().get('/actor')
+        res = self.client().get('/actor', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -123,7 +123,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["total_actors"])
 
     def test_404_get_actors(self):
-        res = self.client().get('/actor?page=100000')
+        res = self.client().get('/actor?page=100000', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -138,11 +138,11 @@ class TriviaTestCase(unittest.TestCase):
             "age": "23",
             "gender": "F"
         }
-        res = self.client().post('/actor', json=actor)
+        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
         data = json.loads(res.data)
         actor = data["Actor"]
 
-        res = self.client().delete('/actor/{}'.format(actor["id"]))
+        res = self.client().delete('/actor/{}'.format(actor["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -151,7 +151,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["actor_id"], actor["id"])
 
     def test_422_delete_actors(self):
-        res = self.client().delete('/actor/abc')
+        res = self.client().delete('/actor/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -161,7 +161,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_delete_actors(self):
-        res = self.client().delete('/actor/9999999')
+        res = self.client().delete('/actor/9999999', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -176,7 +176,7 @@ class TriviaTestCase(unittest.TestCase):
             "age": 30,
             "gender": "M"
         }
-        res = self.client().patch('/actor/1', json=actor)
+        res = self.client().patch('/actor/1', json=actor, headers=producer_auth_header)
         data = json.loads(res.data)
         actor = data["actor"]
 
@@ -187,7 +187,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(actor["gender"], "M")
 
     def test_422_patch_actors(self):
-        res = self.client().patch('/actor/abc')
+        res = self.client().patch('/actor/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -197,7 +197,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_patch_actors(self):
-        res = self.client().patch('/actor/9999999')
+        res = self.client().patch('/actor/9999999', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -207,7 +207,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 404)
 
     def test_get_movies(self):
-        res = self.client().get('/movie')
+        res = self.client().get('/movie', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -217,7 +217,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["total_movies"])
 
     def test_404_get_movies(self):
-        res = self.client().get('/movie?page=100000')
+        res = self.client().get('/movie?page=100000', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -233,7 +233,7 @@ class TriviaTestCase(unittest.TestCase):
             "desc": "A movie about a small boy"
         }
 
-        res = self.client().post('/movie', json=movie)
+        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -251,7 +251,7 @@ class TriviaTestCase(unittest.TestCase):
             "desc": "A movie about a small boy"
         }
 
-        res = self.client().post('/movie', json=movie)
+        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -264,7 +264,7 @@ class TriviaTestCase(unittest.TestCase):
             "title": "John"
         }
 
-        res = self.client().post('/movie', json=movie)
+        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -279,7 +279,7 @@ class TriviaTestCase(unittest.TestCase):
             "rating": 4,
             "desc": "A movie about a small boy"
         }
-        res = self.client().patch('/movie/1', json=movie)
+        res = self.client().patch('/movie/1', json=movie, headers=producer_auth_header)
         data = json.loads(res.data)
         movie = data["movie"]
 
@@ -290,7 +290,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(movie["desc"], "A movie about a small boy")
 
     def test_422_patch_movies(self):
-        res = self.client().patch('/movie/abc')
+        res = self.client().patch('/movie/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -300,7 +300,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_patch_movies(self):
-        res = self.client().patch('/movie/9999999')
+        res = self.client().patch('/movie/9999999', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -315,11 +315,11 @@ class TriviaTestCase(unittest.TestCase):
             "rating": 4,
             "desc": "A movie about a small boy"
         }
-        res = self.client().post('/movie', json=movie)
+        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
         data = json.loads(res.data)
         movie = data["movie"]
 
-        res = self.client().delete('/movie/{}'.format(movie["id"]))
+        res = self.client().delete('/movie/{}'.format(movie["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -328,7 +328,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["movie_id"], movie["id"])
 
     def test_422_delete_movies(self):
-        res = self.client().delete('/movie/abc')
+        res = self.client().delete('/movie/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -338,7 +338,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_delete_movies(self):
-        res = self.client().delete('/movie/9999999')
+        res = self.client().delete('/movie/9999999', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
