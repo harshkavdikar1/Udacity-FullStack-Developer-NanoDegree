@@ -2,8 +2,52 @@
 
 
 ## API Documentation
+<a name="api"></a>
 
 Here you can find all existing endpoints, which methods can be used, how to work with them & example responses you´ll get.
+
+Additionally, common pitfalls & error messages are explained, if applicable.
+
+### Base URL
+
+**Base URL**
+
+### Authentification
+
+Please see [API Authentification](#authentification-bearer)
+
+### Available Endpoints
+
+Here is a short table about which ressources exist and which method you can use on them.
+
+                          Allowed Methods
+       Endpoints    |  GET |  POST |  DELETE | PATCH  |
+                    |------|-------|---------|--------|
+      /actors       |  [x] |  [x]  |   [x]   |   [x]  |   
+      /movies       |  [x] |  [x]  |   [x]   |   [x]  |   
+
+### How to work with each endpoint
+
+Click on a link to directly get to the ressource.
+
+1. Actors
+   1. [GET /actors](#get-actors)
+   2. [POST /actors](#post-actors)
+   3. [DELETE /actors](#delete-actors)
+   4. [PATCH /actors](#patch-actors)
+2. Movies
+   1. [GET /movies](#get-movies)
+   2. [POST /movies](#post-movies)
+   3. [DELETE /movies](#delete-movies)
+   4. [PATCH /movies](#patch-movies)
+
+Each ressource documentation is clearly structured:
+1. Description in a few words
+2. `curl` example that can directly be used in terminal
+3. More descriptive explanation of input & outputs.
+4. Required permission
+5. Example Response.
+6. Error Handling (`curl` command to trigger error + error response)
 
 ### 1. GET /actors
 
