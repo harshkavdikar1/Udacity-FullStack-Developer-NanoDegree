@@ -472,3 +472,32 @@ All API Endpoints are decorated with Auth0 permissions. To use the project local
 6. After you created all permissions this app needs, go back to `Users and Roles` => `Roles` and select the role you recently created.
 6. Under `Permissions`, assign all permissions you want this role to have. 
 
+# <a name="authentification-bearer"></a>
+### Auth0 to use existing API
+If you want to access the real, temporary API, bearer tokens for all 3 roles are included in the `config.py` file.
+
+## Existing Roles
+
+They are 3 Roles with distinct permission sets:
+
+1. Casting Assistant:
+  - GET /actors (view:actors): Can see all actors
+  - GET /movies (view:movies): Can see all movies
+2. Casting Director (everything from Casting Assistant plus)
+  - POST /actors (create:actors): Can create new Actors
+  - PATCH /actors (edit:actors): Can edit existing Actors
+  - DELETE /actors (delete:actors): Can remove existing Actors from database
+  - PATCH /movies (edit:movies): Can edit existing Movies
+3. Exectutive Dircector (everything from Casting Director plus)
+  - POST /movies (create:movies): Can create new Movies
+  - DELETE /movies (delete:movies): Can remove existing Motives from database
+
+In your API Calls, add them as Header, with `Authorization` as key and the `Bearer token` as value. Don´t forget to also
+prepend `Bearer` to the token (seperated by space).
+
+For example: (Bearer token for `Executive Director`)
+```js
+{
+    "Authorization": "Bearer your_token"
+}
+```
