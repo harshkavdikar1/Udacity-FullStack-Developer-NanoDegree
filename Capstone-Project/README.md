@@ -20,6 +20,26 @@ It covers following technical topics in 1 app:
 4. Authorization & Role based Authentification with `Auth0` (see `auth.py`)
 5. Deployment on `Heroku`
 
+<a name="start-locally"></a>
+## Start Project locally
+
+Make sure you `cd` into the correct folder (with all app files) before following the setup steps.
+Also, you need the latest version of [Python 3](https://www.python.org/downloads/)
+and [postgres](https://www.postgresql.org/download/) installed on your machine.
+
+To start and run the local development server,
+
+1. Initialize and activate a virtualenv:
+```bash
+$ virtualenv --no-site-packages env_capstone
+$ source env_capstone/scripts/activate
+```
+
+2. Install the dependencies:
+```bash
+$ pip install -r requirements.txt
+```
+
 <a name="api"></a>
 ## API Documentation
 
