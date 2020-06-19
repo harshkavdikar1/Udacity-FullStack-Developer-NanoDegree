@@ -40,6 +40,36 @@ $ source env_capstone/scripts/activate
 $ pip install -r requirements.txt
 ```
 
+3. Setup Auth0
+If you only want to test the API (i.e. Project Reviewer), you can
+simply take the existing bearer tokens in `config.py`.
+
+If you already know your way around `Auth0`, just insert your data 
+into `config.py` => auth0_config.
+
+FYI: Here are the steps I followed to enable [authentification](#authentification).
+
+4. Run the development server:
+```bash 
+$ python app.py
+```
+
+5. (optional) To execute tests, run
+```bash 
+$ python test_app.py
+```
+If you choose to run all tests, it should give this response if everything went fine:
+
+```bash
+$ python test_app.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 15.906s
+
+OK
+
+```
+
 <a name="api"></a>
 ## API Documentation
 
@@ -527,7 +557,7 @@ They are 3 Roles with distinct permission sets:
   - PATCH /actors (edit:actors): Can edit existing Actors
   - DELETE /actors (delete:actors): Can remove existing Actors from database
   - PATCH /movies (edit:movies): Can edit existing Movies
-3. Exectutive Dircector (everything from Casting Director plus)
+3. Exectutive Producer (everything from Casting Director plus)
   - POST /movies (create:movies): Can create new Movies
   - DELETE /movies (delete:movies): Can remove existing Motives from database
 
