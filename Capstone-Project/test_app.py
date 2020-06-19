@@ -19,6 +19,7 @@ producer_auth_header = {
     'Authorization': bearer_tokens['producer']
 }
 
+
 class TriviaTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
 
@@ -142,7 +143,8 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         actor = data["Actor"]
 
-        res = self.client().delete('/actor/{}'.format(actor["id"]), headers=producer_auth_header)
+        res = self.client().delete(
+            '/actor/{}'.format(actor["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -169,7 +171,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
-    
+
     def test_403_delete_actors(self):
         res = self.client().delete('/actor/1', headers=assistant_auth_header)
 
@@ -178,7 +180,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 403)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"]["code"], "Unauthorized")
-        self.assertEqual(data["message"]["description"], "Permission not found.")
+        self.assertEqual(data["message"]["description"],
+                         "Permission not found.")
         self.assertEqual(data["error"], 403)
 
     def test_patch_actors(self):
@@ -224,8 +227,10 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"]["code"], "authorization_header_missing")
-        self.assertEqual(data["message"]["description"], "Authorization header is expected.")
+        self.assertEqual(data["message"]["code"],
+                         "authorization_header_missing")
+        self.assertEqual(data["message"]["description"],
+                         "Authorization header is expected.")
         self.assertEqual(data["error"], 401)
 
     def test_get_movies(self):
@@ -237,7 +242,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data["movies"])
         self.assertTrue(data["total_movies"])
-    
+
     def test_401_get_actors_bearer_missing(self):
         res = self.client().get('/movie', headers={"Authorization": "abc"})
 
@@ -246,7 +251,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"]["code"], "invalid_header")
-        self.assertEqual(data["message"]["description"], "Authorization header must be of type token bearer.")
+        self.assertEqual(data["message"]["description"],
+                         "Authorization header must be of type token bearer.")
         self.assertEqual(data["error"], 401)
 
     def test_404_get_movies(self):
@@ -305,7 +311,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Movie's rating is not provided.")
 
-
     def test_patch_movies(self):
         movie = {
             "title": "A fluke",
@@ -341,7 +346,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
         self.assertEqual(data["error"], 404)
-    
+
     def test_401_patch_movies(self):
         res = self.client().patch('/movie/1')
 
@@ -349,8 +354,10 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"]["code"], "authorization_header_missing")
-        self.assertEqual(data["message"]["description"], "Authorization header is expected.")
+        self.assertEqual(data["message"]["code"],
+                         "authorization_header_missing")
+        self.assertEqual(data["message"]["description"],
+                         "Authorization header is expected.")
         self.assertEqual(data["error"], 401)
 
     def test_delete_movies(self):
@@ -363,7 +370,8 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         movie = data["movie"]
 
-        res = self.client().delete('/movie/{}'.format(movie["id"]), headers=producer_auth_header)
+        res = self.client().delete(
+            '/movie/{}'.format(movie["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -399,8 +407,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 403)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"]["code"], "Unauthorized")
-        self.assertEqual(data["message"]["description"], "Permission not found.")
+        self.assertEqual(data["message"]["description"],
+                         "Permission not found.")
         self.assertEqual(data["error"], 403)
+
 
 if __name__ == '__main__':
     unittest.main()
