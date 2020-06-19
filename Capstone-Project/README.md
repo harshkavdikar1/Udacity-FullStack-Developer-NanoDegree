@@ -460,3 +460,15 @@ All API Endpoints are decorated with Auth0 permissions. To use the project local
    2. Identifier `Music`
    3. Keep Algorithm as it is
 8. Go to Settings and find `Identifier`. Copy & paste it into config.py => auth0_config['API_AUDIENCE'] (i.e. replace `"Example"`)
+
+#### Create Roles & Permissions
+
+1. Before creating `Roles & Permissions`, you need to `Enable RBAC` in your API (API => Click on your API Name => Settings = Enable RBAC => Save)
+2. Also, check the button `Add Permissions in the Access Token`.
+2. First, create a new Role under `Users and Roles` => `Roles` => `Create Roles`
+3. Give it a descriptive name like `Casting Assistant`.
+4. Go back to the API Tab and find your newly created API. Click on Permissions.
+5. Create & assign all needed permissions accordingly 
+6. After you created all permissions this app needs, go back to `Users and Roles` => `Roles` and select the role you recently created.
+6. Under `Permissions`, assign all permissions you want this role to have. 
+
