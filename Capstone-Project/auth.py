@@ -105,8 +105,8 @@ def verify_decode_jwt(token):
         the decodeded payload
     """
 
-    jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
-    jwks = json.loads(jsonurl.read())
+    jsonurl = urlopen("https://{}/.well-known/jwks.json".format(AUTH0_DOMAIN))
+    jwks = json.loads(jsonurl.read().decode('utf-8'))
 
     # GET THE DATA IN THE HEADER
     unverified_header = jwt.get_unverified_header(token)
