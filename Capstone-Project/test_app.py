@@ -51,11 +51,12 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(
-            data['message'], "Welcome please refer to API documentation for the endpoints")
+            data['message'],
+            "Welcome please refer to API documentation for the endpoints")
 
     def test_add_actor(self):
         """
-        Test POST request for /actor endpoint.
+        Test POST request for /actors endpoint.
         """
         actor = {
             "name": "John",
@@ -63,7 +64,8 @@ class TriviaTestCase(unittest.TestCase):
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
+        res = self.client().post('/actors', json=actor,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -76,15 +78,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(act["id"])
 
     def test_422_add_actor_name(self):
-        """ 
-        Test 422 error for POST request for /actor endpoint.
+        """
+        Test 422 error for POST request for /actors endpoint.
         """
         actor = {
             "age": "20",
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
+        res = self.client().post('/actors', json=actor,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -93,15 +96,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor's Name is not provided.")
 
     def test_422_add_actor_age(self):
-        """ 
-        Test 422 error for POST request for /actor endpoint.
+        """
+        Test 422 error for POST request for /actors endpoint.
         """
         actor = {
             "name": "John",
             "gender": "M"
         }
 
-        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
+        res = self.client().post('/actors', json=actor,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -110,15 +114,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor's age is not provided.")
 
     def test_422_add_actor_gender(self):
-        """ 
-        Test 422 error for POST request for /actor endpoint.
+        """
+        Test 422 error for POST request for /actors endpoint.
         """
         actor = {
             "name": "John",
             "age": "20"
         }
 
-        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
+        res = self.client().post('/actors', json=actor,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -127,10 +132,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Actor's gender is not provided.")
 
     def test_get_actors(self):
-        """ 
-        Test GET request for /actor endpoint.
         """
-        res = self.client().get('/actor', headers=producer_auth_header)
+        Test GET request for /actors endpoint.
+        """
+        res = self.client().get('/actors', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -140,10 +145,11 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["total_actors"])
 
     def test_404_get_actors(self):
-        """ 
-        Test 404 error for GET request for /actor endpoint.
         """
-        res = self.client().get('/actor?page=100000', headers=producer_auth_header)
+        Test 404 error for GET request for /actors endpoint.
+        """
+        res = self.client().get('/actors?page=100000',
+                                headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -153,20 +159,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 404)
 
     def test_delete_actors(self):
-        """ 
-        Test DELETE request for /actor endpoint.
+        """
+        Test DELETE request for /actors endpoint.
         """
         actor = {
             "name": "Sara",
             "age": "23",
             "gender": "F"
         }
-        res = self.client().post('/actor', json=actor, headers=producer_auth_header)
+        res = self.client().post('/actors', json=actor,
+                                 headers=producer_auth_header)
         data = json.loads(res.data)
         actor = data["Actor"]
 
         res = self.client().delete(
-            '/actor/{}'.format(actor["id"]), headers=producer_auth_header)
+            '/actors/{}'.format(actor["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -175,10 +182,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["actor_id"], actor["id"])
 
     def test_422_delete_actors(self):
-        """ 
-        Test 422 error for DELETE request for /actor endpoint.
         """
-        res = self.client().delete('/actor/abc', headers=producer_auth_header)
+        Test 422 error for DELETE request for /actors endpoint.
+        """
+        res = self.client().delete('/actors/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -188,10 +195,11 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_delete_actors(self):
-        """ 
-        Test 404 error for DELETE request for /actor endpoint.
         """
-        res = self.client().delete('/actor/9999999', headers=producer_auth_header)
+        Test 404 error for DELETE request for /actors endpoint.
+        """
+        res = self.client().delete('/actors/9999999',
+                                   headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -201,10 +209,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 404)
 
     def test_403_delete_actors(self):
-        """ 
-        Test 403 error for DELETE request for /actor endpoint.
         """
-        res = self.client().delete('/actor/1', headers=assistant_auth_header)
+        Test 403 error for DELETE request for /actors endpoint.
+        """
+        res = self.client().delete('/actors/1', headers=assistant_auth_header)
 
         data = json.loads(res.data)
 
@@ -216,15 +224,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 403)
 
     def test_patch_actors(self):
-        """ 
-        Test PATCH request for /actor endpoint.
+        """
+        Test PATCH request for /actors endpoint.
         """
         actor = {
             "name": "Marsh",
             "age": 30,
             "gender": "M"
         }
-        res = self.client().patch('/actor/1', json=actor, headers=producer_auth_header)
+        res = self.client().patch('/actors/1', json=actor,
+                                  headers=producer_auth_header)
         data = json.loads(res.data)
         actor = data["actor"]
 
@@ -235,10 +244,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(actor["gender"], "M")
 
     def test_422_patch_actors(self):
-        """ 
-        Test 422 error for PATCH request for /actor endpoint.
         """
-        res = self.client().patch('/actor/abc', headers=producer_auth_header)
+        Test 422 error for PATCH request for /actors endpoint.
+        """
+        res = self.client().patch('/actors/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -248,23 +257,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_patch_actors(self):
-        """ 
-        Test 404 error for PATCH request for /actor endpoint.
         """
-        res = self.client().patch('/actor/9999999', headers=producer_auth_header)
+        Test 404 error for PATCH request for /actors endpoint.
+        """
+        res = self.client().patch('/actors/999999',
+                                  headers=producer_auth_header)
 
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Actor wth id = 9999999 not found.")
+        self.assertEqual(data["message"], "Actor wth id = 999999 not found.")
         self.assertEqual(data["error"], 404)
 
     def test_401_patch_actors(self):
-        """ 
-        Test 401 error for PATCH request for /actor endpoint.
         """
-        res = self.client().patch('/actor/1')
+        Test 401 error for PATCH request for /actors endpoint.
+        """
+        res = self.client().patch('/actors/1')
 
         data = json.loads(res.data)
 
@@ -277,10 +287,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 401)
 
     def test_get_movies(self):
-        """ 
-        Test GET request for /movie endpoint.
         """
-        res = self.client().get('/movie', headers=producer_auth_header)
+        Test GET request for /movies endpoint.
+        """
+        res = self.client().get('/movies', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -290,10 +300,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["total_movies"])
 
     def test_401_get_actors_bearer_missing(self):
-        """ 
-        Test 401 error for GET request for /movie endpoint.
         """
-        res = self.client().get('/movie', headers={"Authorization": "abc"})
+        Test 401 error for GET request for /movies endpoint.
+        """
+        res = self.client().get('/movies', headers={"Authorization": "abc"})
 
         data = json.loads(res.data)
 
@@ -305,10 +315,11 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 401)
 
     def test_404_get_movies(self):
-        """ 
-        Test 404 error for GET request for /movie endpoint.
         """
-        res = self.client().get('/movie?page=100000', headers=producer_auth_header)
+        Test 404 error for GET request for /movies endpoint.
+        """
+        res = self.client().get('/movies?page=100000',
+                                headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -318,8 +329,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 404)
 
     def test_add_movie(self):
-        """ 
-        Test POST request for /movie endpoint.
+        """
+        Test POST request for /movies endpoint.
         """
         movie = {
             "title": "A fluke",
@@ -327,7 +338,8 @@ class TriviaTestCase(unittest.TestCase):
             "desc": "A movie about a small boy"
         }
 
-        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
+        res = self.client().post('/movies', json=movie,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -340,15 +352,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(mov["id"])
 
     def test_422_add_movie_title(self):
-        """ 
-        Test 422 error for POST request for /movie endpoint.
+        """
+        Test 422 error for POST request for /movies endpoint.
         """
         movie = {
             "rating": 4,
             "desc": "A movie about a small boy"
         }
 
-        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
+        res = self.client().post('/movies', json=movie,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -357,14 +370,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Movie's title is not provided.")
 
     def test_422_add_movie_rating(self):
-        """ 
-        Test 422 error for POST request for /movie endpoint.
+        """
+        Test 422 error for POST request for /movies endpoint.
         """
         movie = {
             "title": "John"
         }
 
-        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
+        res = self.client().post('/movies', json=movie,
+                                 headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -373,15 +387,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "Movie's rating is not provided.")
 
     def test_patch_movies(self):
-        """ 
-        Test PATCH request for /movie endpoint.
+        """
+        Test PATCH request for /movies endpoint.
         """
         movie = {
             "title": "A fluke",
             "rating": 4,
             "desc": "A movie about a small boy"
         }
-        res = self.client().patch('/movie/1', json=movie, headers=producer_auth_header)
+        res = self.client().patch('/movies/1', json=movie,
+                                  headers=producer_auth_header)
         data = json.loads(res.data)
         movie = data["movie"]
 
@@ -392,10 +407,11 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(movie["desc"], "A movie about a small boy")
 
     def test_422_patch_movies(self):
-        """ 
-        Test 422 error for PATCH request for /movie endpoint.
         """
-        res = self.client().patch('/movie/abc', headers=producer_auth_header)
+        Test 422 error for PATCH request for /movies endpoint.
+        """
+        res = self.client().patch('/movies/abc',
+                                  headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -405,23 +421,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_patch_movies(self):
-        """ 
-        Test 404 error for PATCH request for /movie endpoint.
         """
-        res = self.client().patch('/movie/9999999', headers=producer_auth_header)
+        Test 404 error for PATCH request for /movies endpoint.
+        """
+        res = self.client().patch('/movies/999999',
+                                  headers=producer_auth_header)
 
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
+        self.assertEqual(data["message"], "Movie wth id = 999999 not found.")
         self.assertEqual(data["error"], 404)
 
     def test_401_patch_movies(self):
-        """ 
-        Test 401 error for PATCH request for /movie endpoint.
         """
-        res = self.client().patch('/movie/1')
+        Test 401 error for PATCH request for /movies endpoint.
+        """
+        res = self.client().patch('/movies/1')
 
         data = json.loads(res.data)
 
@@ -434,20 +451,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 401)
 
     def test_delete_movies(self):
-        """ 
-        Test DELETE request for /movie endpoint.
+        """
+        Test DELETE request for /movies endpoint.
         """
         movie = {
             "title": "A fluke",
             "rating": 4,
             "desc": "A movie about a small boy"
         }
-        res = self.client().post('/movie', json=movie, headers=producer_auth_header)
+        res = self.client().post('/movies', json=movie,
+                                 headers=producer_auth_header)
         data = json.loads(res.data)
         movie = data["movie"]
 
         res = self.client().delete(
-            '/movie/{}'.format(movie["id"]), headers=producer_auth_header)
+            '/movies/{}'.format(movie["id"]), headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -456,10 +474,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["movie_id"], movie["id"])
 
     def test_422_delete_movies(self):
-        """ 
-        Test 422 error for DELETE request for /movie endpoint.
         """
-        res = self.client().delete('/movie/abc', headers=producer_auth_header)
+        Test 422 error for DELETE request for /movies endpoint.
+        """
+        res = self.client().delete('/movies/abc', headers=producer_auth_header)
 
         data = json.loads(res.data)
 
@@ -469,23 +487,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
 
     def test_404_delete_movies(self):
-        """ 
-        Test 404 error for DELETE request for /movie endpoint.
         """
-        res = self.client().delete('/movie/9999999', headers=producer_auth_header)
+        Test 404 error for DELETE request for /movies endpoint.
+        """
+        res = self.client().delete('/movies/99999',
+                                   headers=producer_auth_header)
 
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "Movie wth id = 9999999 not found.")
+        self.assertEqual(data["message"], "Movie wth id = 99999 not found.")
         self.assertEqual(data["error"], 404)
 
     def test_403_delete_movies(self):
-        """ 
-        Test 403 error for DELETE request for /movie endpoint.
         """
-        res = self.client().delete('/movie/1', headers=assistant_auth_header)
+        Test 403 error for DELETE request for /movies endpoint.
+        """
+        res = self.client().delete('/movies/1',
+                                   headers=assistant_auth_header)
 
         data = json.loads(res.data)
 

@@ -5,17 +5,23 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'fsnanodegree2020.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'capstone'
+# AUTH0_DOMAIN = 'fsnanodegree2020.auth0.com'
+# ALGORITHMS = ['RS256']
+# API_AUDIENCE = 'capstone'
+
+AUTH0_DOMAIN = os.environ.get('AUTH_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
+API_AUDIENCE =  os.environ.get('API_AUDIENCE')
 
 # AuthError Exception
+
 
 class AuthError(Exception):
     """
     AuthError Exception
     A standardized way to communicate auth failure modes
     """
+
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
@@ -67,7 +73,7 @@ def check_permissions(permission, payload):
     It raises an AuthError if permissions are not included in the payload.
     It raises an AuthError if the requested permission string is not in the
     payload permissions array return true otherwise.
-    
+
     Arguments:
         permission: string permission (i.e. 'post:drink')
         payload: decoded jwt payload
@@ -151,7 +157,8 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': 'Incorrect claims. Please,' +
+                               'check the audience and issuer.'
             }, 401)
 
         except Exception:
@@ -162,7 +169,7 @@ def verify_decode_jwt(token):
 
     raise AuthError({
         'code': 'invalid_header',
-                'description': 'Unable to find the appropriate key.'
+        'description': 'Unable to find the appropriate key.'
     }, 400)
 
 
@@ -170,11 +177,12 @@ def requires_auth(permission=''):
     """
     It uses the get_token_auth_header method to get the token.
     It uses the verify_decode_jwt method to decode the jwt.
-    It uses the check_permissions method validate claims and check the requested permission.
+    It uses the check_permissions method validate claims
+    and check the requested permission.
 
     Arguments:
         permission: string permission (i.e. 'post:drink')
-    
+
     Return:
         The decorator which passes the decoded payload to the decorated method
     """
