@@ -21,10 +21,11 @@ def create_app(test_config=None):
     def home():
         return jsonify({
             "success": True,
-            "message": "Welcome please refer to API documentation for the endpoints"
+            "message": "Welcome please refer to API" +
+            " documentation for the endpoints"
         })
 
-    @app.route("/actor", methods=["GET"])
+    @app.route("/actors", methods=["GET"])
     @requires_auth('read:actor')
     def get_actors(token):
         """
@@ -38,7 +39,7 @@ def create_app(test_config=None):
 
         page = int(request.args.get("page", 1))
 
-        start = (page - 1)*ROWS_PER_PAGE
+        start = (page - 1) * ROWS_PER_PAGE
         end = start + ROWS_PER_PAGE
 
         actors = Actor.query.all()
@@ -58,7 +59,7 @@ def create_app(test_config=None):
             "total_actors": len(actors)
         })
 
-    @app.route("/actor", methods=["POST"])
+    @app.route("/actors", methods=["POST"])
     @requires_auth('create:actor')
     def add_actor(token):
         """
@@ -107,7 +108,7 @@ def create_app(test_config=None):
             "Actor": actor.format()
         })
 
-    @app.route("/actor/<actor_id>", methods=["PATCH"])
+    @app.route("/actors/<actor_id>", methods=["PATCH"])
     @requires_auth("edit:actor")
     def update_actor(token, actor_id):
         """
@@ -123,7 +124,7 @@ def create_app(test_config=None):
         try:
             actor_id = int(actor_id)
             actor = Actor.query.get(actor_id)
-        except:
+        except Exception:
             abort(422)
 
         if not actor:
@@ -141,7 +142,7 @@ def create_app(test_config=None):
 
         try:
             actor.update()
-        except:
+        except Exception:
             abort(500)
 
         return jsonify({
@@ -149,7 +150,7 @@ def create_app(test_config=None):
             'actor': actor.format()
         })
 
-    @app.route("/actor/<actor_id>", methods=["DELETE"])
+    @app.route("/actors/<actor_id>", methods=["DELETE"])
     @requires_auth("delete:actor")
     def delete_actor(token, actor_id):
         """
@@ -166,7 +167,7 @@ def create_app(test_config=None):
         try:
             actor_id = int(actor_id)
             actor = Actor.query.get(actor_id)
-        except:
+        except Exception:
             abort(422)
 
         if not actor:
@@ -178,7 +179,7 @@ def create_app(test_config=None):
 
         try:
             actor.delete()
-        except:
+        except Exception:
             abort(500)
 
         return jsonify({
@@ -186,7 +187,7 @@ def create_app(test_config=None):
             "success": True
         })
 
-    @app.route("/movie", methods=["GET"])
+    @app.route("/movies", methods=["GET"])
     @requires_auth('read:movie')
     def get_movies(token):
         """
@@ -201,7 +202,7 @@ def create_app(test_config=None):
 
         page = int(request.args.get("page", 1))
 
-        start = (page - 1)*ROWS_PER_PAGE
+        start = (page - 1) * ROWS_PER_PAGE
         end = start + ROWS_PER_PAGE
 
         movies = Movie.query.all()
@@ -221,7 +222,7 @@ def create_app(test_config=None):
             "total_movies": len(movies)
         })
 
-    @app.route("/movie", methods=["POST"])
+    @app.route("/movies", methods=["POST"])
     @requires_auth('create:movie')
     def add_movie(token):
         """
@@ -251,8 +252,11 @@ def create_app(test_config=None):
             }), 422
 
         try:
-            movie = Movie(title=data["title"], rating=data["rating"], release_date=data.get(
-                "release_date"), desc=data.get("desc"))
+            movie = Movie(
+                title=data["title"],
+                rating=data["rating"],
+                release_date=data.get("release_date"),
+                desc=data.get("desc"))
             movie.insert()
         except Exception:
             abort(500)
@@ -262,7 +266,7 @@ def create_app(test_config=None):
             "movie": movie.format()
         })
 
-    @app.route("/movie/<movie_id>", methods=["PATCH"])
+    @app.route("/movies/<movie_id>", methods=["PATCH"])
     @requires_auth('edit:movie')
     def update_movie(token, movie_id):
         """
@@ -278,7 +282,7 @@ def create_app(test_config=None):
         try:
             movie_id = int(movie_id)
             movie = Movie.query.get(movie_id)
-        except:
+        except Exception:
             abort(422)
 
         if not movie:
@@ -297,7 +301,7 @@ def create_app(test_config=None):
 
         try:
             movie.update()
-        except:
+        except Exception:
             abort(500)
 
         return jsonify({
@@ -305,7 +309,7 @@ def create_app(test_config=None):
             'movie': movie.format()
         })
 
-    @app.route("/movie/<movie_id>", methods=["DELETE"])
+    @app.route("/movies/<movie_id>", methods=["DELETE"])
     @requires_auth('delete:movie')
     def delete_movie(token, movie_id):
         """
@@ -322,7 +326,7 @@ def create_app(test_config=None):
         try:
             movie_id = int(movie_id)
             movie = Movie.query.get(movie_id)
-        except:
+        except Exception:
             abort(422)
 
         if not movie:
@@ -334,7 +338,7 @@ def create_app(test_config=None):
 
         try:
             movie.delete()
-        except:
+        except Exception:
             abort(500)
 
         return jsonify({
