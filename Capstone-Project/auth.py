@@ -3,7 +3,7 @@ from flask import request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
-
+import os
 
 # AUTH0_DOMAIN = 'fsnanodegree2020.auth0.com'
 # ALGORITHMS = ['RS256']
