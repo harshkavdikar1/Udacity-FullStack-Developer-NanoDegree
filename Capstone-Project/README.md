@@ -1,5 +1,9 @@
 # Capstone Project
 
+## ATTENTION PLEASE!!
+## PROJECT IS DEPLOYED ON AWS AND NOT ON HEROKU
+## Extended URL = ec2-3-128-91-119.us-east-2.compute.amazonaws.com
+
 ## Content
 
 1. [Motivation](#motivation)
