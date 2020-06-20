@@ -102,7 +102,7 @@ Here is a short table about which ressources exist and which method you can use 
       /movies       |  [x] |  [x]  |   [x]   |   [x]  |   
 
 ### How to work with each endpoint
-
+ 
 Click on a link to directly get to the ressource.
 
 1. Actors
@@ -215,11 +215,11 @@ $ curl -X POST http://3.128.91.119:8080/actors
 
 ```
 #### Errors
-If you try to create a new actor without a requiered field like `name`,
+If you try to create a new actor without a required field like `name`,
 it will throw a `422` error:
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080//actors
+$ curl -X POST http://3.128.91.119:8080/actors
 ```
 
 will return
@@ -332,7 +332,7 @@ will return
 Query paginated movies.
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080/movies?page1
+$ curl -X GET http://3.128.91.119:8080/movies?page=1
 ```
 - Fetches a list of dictionaries of examples in which the keys are the ids with all available fields
 - Request Arguments: 
@@ -364,7 +364,7 @@ $ curl -X GET http://3.128.91.119:8080/movies?page1
 If you try fetch a page which does not have any movies, you will encounter an error which looks like this:
 
 ```bash
-$ curl -X GET https://artist-capstone-fsnd-matthew.herokuapp.com/movies?page123124
+$ curl -X GET http://3.128.91.119:8080/movies?page=100000
 ```
 
 will return
@@ -383,7 +383,7 @@ will return
 Insert new Movie into database.
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/movie
+$ curl -X POST http://3.128.91.119:8080/movies
 ```
 
 - Request Arguments: **None**
@@ -411,7 +411,7 @@ If you try to create a new movie without a requiered field like `name`,
 it will throw a `422` error:
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/movie?page123124
+$ curl -X POST http://3.128.91.119:8080/movies
 ```
 
 will return
@@ -430,7 +430,7 @@ will return
 Edit an existing Movie
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/movie/1
+$ curl -X PATCH http://3.128.91.119:8080/movies/1
 ```
 
 - Request Arguments: **integer** `id from movie you want to update`
@@ -462,7 +462,7 @@ $ curl -X PATCH http://3.128.91.119:8080/movie/1
 If you try to update an movie with an invalid id it will throw an `404` error:
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/movie/125
+$ curl -X PATCH http://3.128.91.119:8080/movies/125
 ```
 
 will return
@@ -481,7 +481,7 @@ will return
 Delete an existing movie
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/movie/1
+$ curl -X DELETE http://3.128.91.119:8080/movies/1
 ```
 
 - Request Arguments: **integer** `id from movie you want to delete`
@@ -503,7 +503,7 @@ $ curl -X DELETE http://3.128.91.119:8080/movie/1
 If you try to delete movie with an invalid id, it will throw an `404` error:
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/movie/125
+$ curl -X DELETE http://3.128.91.119:8080/movies/125
 ```
 
 will return
