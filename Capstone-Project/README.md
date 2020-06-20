@@ -136,7 +136,7 @@ $ curl -X GET http://3.128.91.119:8080/actors?page=1
 - Request Arguments: 
     - **integer** `page` (optional, 10 actors per page, defaults to `1` if not given)
 - Request Headers: **None**
-- Requires permission: `read:actors`
+- Requires permission: `read:actor`
 - Returns: 
   1. List of dict of actors with following fields:
       - **integer** `id`
@@ -196,7 +196,7 @@ $ curl -X POST http://3.128.91.119:8080/actors
        1. **string** `name` (<span style="color:red">*</span>required)
        2. **integer** `age` (<span style="color:red">*</span>required)
        3. **string** `gender`
-- Requires permission: `create:actors`
+- Requires permission: `create:actor`
 - Returns: 
   1. **integer** `Actor's details`
   2. **boolean** `success`
@@ -246,7 +246,7 @@ $ curl -X PATCH http://3.128.91.119:8080/actors/1
        1. **string** `name` 
        2. **integer** `age` 
        3. **string** `gender`
-- Requires permission: `edit:actors`
+- Requires permission: `edit:actor`
 - Returns: 
   1. **integer** `id from updated actor`
   2. **boolean** `success`
@@ -296,7 +296,7 @@ $ curl -X DELETE http://3.128.91.119:8080/actors/5
 
 - Request Arguments: **integer** `id from actor you want to delete`
 - Request Headers: `None`
-- Requires permission: `delete:actors`
+- Requires permission: `delete:actor`
 - Returns: 
   1. **integer** `id from deleted actor`
   2. **boolean** `success`
@@ -338,7 +338,7 @@ $ curl -X GET http://3.128.91.119:8080/movies?page=1
 - Request Arguments: 
     - **integer** `page` (optional, 10 movies per page, defaults to `1` if not given)
 - Request Headers: **None**
-- Requires permission: `read:movies`
+- Requires permission: `read:movie`
 - Returns: 
   1. List of dict of movies with following fields:
       - **integer** `id`
@@ -353,7 +353,8 @@ $ curl -X GET http://3.128.91.119:8080/movies?page=1
     {
         "id": 1,
         "release_date": "Sun, 16 Feb 2020 00:00:00 GMT",
-        "title": "Matthew first Movie"
+        "title": "Matthew first Movie",
+        "rating": 5
     }
   ],
   "success": true
@@ -389,8 +390,9 @@ $ curl -X POST http://3.128.91.119:8080/movies
 - Request Arguments: **None**
 - Request Headers: (_application/json_)
        1. **string** `title` (<span style="color:red">*</span>required)
-       2. **date** `release_date` (<span style="color:red">*</span>required)
-- Requires permission: `create:movies`
+       2. **date** `release_date` (<span style="color:red">*</span>optional)
+       3. **date** `rating` (<span style="color:red">*</span>required)
+- Requires permission: `create:movie`
 - Returns: 
   1. **integer** `id from newly created movie`
   2. **boolean** `success`
@@ -401,7 +403,8 @@ $ curl -X POST http://3.128.91.119:8080/movies
     "movie": {
         "id": 1,
         "release_date": "Sun, 16 Feb 2020 00:00:00 GMT",
-        "title": "Test Movie 123"
+        "title": "Test Movie 123",
+        "rating": 5
     },
     "success": true
 }
@@ -437,7 +440,7 @@ $ curl -X PATCH http://3.128.91.119:8080/movies/1
 - Request Headers: (_application/json_)
        1. **string** `title` 
        2. **date** `release_date` 
-- Requires permission: `edit:movies`
+- Requires permission: `edit:movie`
 - Returns: 
   1. **integer** `id from updated movie`
   2. **boolean** `success`
@@ -486,7 +489,7 @@ $ curl -X DELETE http://3.128.91.119:8080/movies/1
 
 - Request Arguments: **integer** `id from movie you want to delete`
 - Request Headers: `None`
-- Requires permission: `delete:movies`
+- Requires permission: `delete:movie`
 - Returns: 
   1. **integer** `id from deleted movie`
   2. **boolean** `success`
