@@ -45,7 +45,7 @@ $ pip install -r requirements.txt
 
 <li> Setup Auth0 </li>
 If you only want to test the API (i.e. Project Reviewer), you can
-simply take the existing bearer tokens in `config.py`.
+simply take the existing bearer tokens in `config.py` and `capstone.conf`.
 
 If you already know your way around `Auth0`, just insert your data 
 into `config.py` => auth0_config.
@@ -85,7 +85,7 @@ Additionally, common pitfalls & error messages are explained, if applicable.
 
 ### Base URL
 
-**http://3.128.91.119:8080/**
+**http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/**
 
 ### Authentification
 
@@ -130,7 +130,7 @@ Each ressource documentation is clearly structured:
 Query paginated actors.
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080/actors?page=1
+$ curl -X GET http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors?page=1
 ```
 - Fetches a list of dictionaries of examples in which the keys are the ids with all available fields
 - Request Arguments: 
@@ -169,7 +169,7 @@ $ curl -X GET http://3.128.91.119:8080/actors?page=1
 If you try fetch a page which does not have any actors, you will encounter an error which looks like this:
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080/actors?page=1000
+$ curl -X GET http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors?page=1000
 ```
 
 will return
@@ -188,7 +188,7 @@ will return
 Insert new actor into database.
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/actors
+$ curl -X POST http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors
 ```
 
 - Request Arguments: **None**
@@ -219,7 +219,7 @@ If you try to create a new actor without a required field like `name`,
 it will throw a `422` error:
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/actors
+$ curl -X POST http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors
 ```
 
 will return
@@ -238,7 +238,7 @@ will return
 Edit an existing Actor
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/actors/1
+$ curl -X PATCH http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors/1
 ```
 
 - Request Arguments: **integer** `id from actor you want to update`
@@ -272,7 +272,7 @@ $ curl -X PATCH http://3.128.91.119:8080/actors/1
 If you try to update an actor with an invalid id it will throw an `404` error:
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/actors/125
+$ curl -X PATCH http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors/125
 ```
 
 will return
@@ -291,7 +291,7 @@ will return
 Delete an existing Actor
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/actors/5
+$ curl -X DELETE http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors/5
 ```
 
 - Request Arguments: **integer** `id from actor you want to delete`
@@ -313,7 +313,7 @@ $ curl -X DELETE http://3.128.91.119:8080/actors/5
 If you try to delete actor with an invalid id, it will throw an `404` error:
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/actors/125
+$ curl -X DELETE http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/actors/125
 ```
 
 will return
@@ -332,7 +332,7 @@ will return
 Query paginated movies.
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080/movies?page=1
+$ curl -X GET http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies?page=1
 ```
 - Fetches a list of dictionaries of examples in which the keys are the ids with all available fields
 - Request Arguments: 
@@ -365,7 +365,7 @@ $ curl -X GET http://3.128.91.119:8080/movies?page=1
 If you try fetch a page which does not have any movies, you will encounter an error which looks like this:
 
 ```bash
-$ curl -X GET http://3.128.91.119:8080/movies?page=100000
+$ curl -X GET http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies?page=100000
 ```
 
 will return
@@ -384,7 +384,7 @@ will return
 Insert new Movie into database.
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/movies
+$ curl -X POST http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies
 ```
 
 - Request Arguments: **None**
@@ -414,7 +414,7 @@ If you try to create a new movie without a requiered field like `name`,
 it will throw a `422` error:
 
 ```bash
-$ curl -X POST http://3.128.91.119:8080/movies
+$ curl -X POST http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies
 ```
 
 will return
@@ -433,7 +433,7 @@ will return
 Edit an existing Movie
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/movies/1
+$ curl -X PATCH http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies/1
 ```
 
 - Request Arguments: **integer** `id from movie you want to update`
@@ -465,7 +465,7 @@ $ curl -X PATCH http://3.128.91.119:8080/movies/1
 If you try to update an movie with an invalid id it will throw an `404` error:
 
 ```bash
-$ curl -X PATCH http://3.128.91.119:8080/movies/125
+$ curl -X PATCH http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies/125
 ```
 
 will return
@@ -484,7 +484,7 @@ will return
 Delete an existing movie
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/movies/1
+$ curl -X DELETE http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies/1
 ```
 
 - Request Arguments: **integer** `id from movie you want to delete`
@@ -506,7 +506,7 @@ $ curl -X DELETE http://3.128.91.119:8080/movies/1
 If you try to delete movie with an invalid id, it will throw an `404` error:
 
 ```bash
-$ curl -X DELETE http://3.128.91.119:8080/movies/125
+$ curl -X DELETE http://ec2-3-128-91-119.us-east-2.compute.amazonaws.com:8080/movies/125
 ```
 
 will return
